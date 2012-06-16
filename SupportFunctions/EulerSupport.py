@@ -3,15 +3,18 @@ import re
 
 
 # This function will read in a file that's seperated by none A-Za-z0-9
-def parseUnicodeSepFile(filePath):
+def parseUnicodeSepFile(filePath, isInt):
   readFile = open(filePath,'r')
   results = []
   for line in readFile:
     list = []
     input = re.findall(r'\w+', line)
     for node in input:
-      list.append(node) 
-  results.append(list)
+      if isInt:
+        list.append(int(node))
+      else:
+        list.append(node)
+    results.append(list)
   return results
   
 def isPrime(num):
