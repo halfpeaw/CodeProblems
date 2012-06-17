@@ -1,6 +1,6 @@
 #Python Helper Class
 import re
-
+import math
 
 # This function will read in a file that's seperated by none A-Za-z0-9
 def parseUnicodeSepFile(filePath, isInt):
@@ -16,6 +16,32 @@ def parseUnicodeSepFile(filePath, isInt):
         list.append(node)
     results.append(list)
   return results
+
+  
+#First calculates a smaller fib number and then using doubling to get a larger fib number.
+#The index is the location of the fib number you are searching for this is used to grow as
+#Quickly as possible
+def fibonacciFastGrow(index):
+  a, b = 0, 1
+  n = 1
+  #Need a better way to coming to this number
+  num = index
+  while num > 250:
+    num = num / 2
+  whenStart = math.floor(num)
+  while n < whenStart:
+    yield (a,b,n)
+    a,b = b, a+b
+    n += 1
+  
+  while True:
+    yield (a,b,n)
+    aN = a*a + b*b
+    bN = b*(2*a+b)
+    a = aN
+    b = bN
+    n = 2*n
+  
   
 def isPrime(num):
   print("isPrime")
