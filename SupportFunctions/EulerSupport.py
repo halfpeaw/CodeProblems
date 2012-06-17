@@ -34,7 +34,7 @@ def fibonacciFastGrow(index):
     a,b = b, a+b
     n += 1
   
-  while True:
+  while 2*n < index:
     yield (a,b,n)
     aN = a*a + b*b
     bN = b*(2*a+b)
@@ -42,6 +42,10 @@ def fibonacciFastGrow(index):
     b = bN
     n = 2*n
   
+  while True:
+    yield (a,b,n)
+    a,b = b, a+b
+    n+=1
   
 def isPrime(num):
   print("isPrime")

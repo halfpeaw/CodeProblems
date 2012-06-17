@@ -62,13 +62,10 @@ def fibLower():
 def findFib(index):
   fib = fibonacciFastGrow(index)  
   n = 0
-  while 2*n < index:
+  while n < index:
     arg = fib.__next__()
     n = arg[2]
   print("N: " + str(arg[2]))
-  while n != index:
-    arg = findNext(arg[0],arg[1],arg[2])
-    n = arg[2]
   first = str(arg[1])[:9]
   if ('1' in first and '2' in first and '3' in first and '4' in first 
       and '5' in first and '6' in first and '7' in first and '8' in first and '9' in first):
