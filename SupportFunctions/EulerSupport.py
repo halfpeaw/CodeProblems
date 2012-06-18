@@ -47,8 +47,28 @@ def fibonacciFastGrow(index):
     a,b = b, a+b
     n+=1
   
+#Returns a list of all primes up to n
+def getPrimes(n):
+  list = [2]
+  for x in range(3,n+1,2):
+    isPrime = True
+    for prime in list:
+      if prime < x ** .5:
+        if x % prime == 0:
+          isPrime = False
+      else:
+        break
+    if isPrime:
+      list.append(x)
+  return list
+  
 def isPrime(num):
-  print("isPrime")
+  n = math.ceil(num ** .5)
+  list = getPrimes(n)
+  for prime in list:
+    if num % prime == 0:
+      return False
+  return True
 
 def listPrimeComponents(num):
   print("List of Prime Components")
