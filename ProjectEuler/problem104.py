@@ -26,13 +26,12 @@ def fibBruteForce():
     arg = fib.__next__()  
     arg = str(arg)
     first = arg[:9]
-    if ('1' in first and '2' in first and '3' in first and '4' in first 
-      and '5' in first and '6' in first and '7' in first and '8' in first and '9' in first):
+    mSet = set('123456789')
+    if (set(first) == mSet):
       print ("Found first: " + str(x))
       last = arg[-9:]
       
-      if ('1' in last and '2' in last and '3' in last and '4' in last 
-        and '5' in last and '6' in last and '7' in last and '8' in last and '9' in last):
+      if (set(last) == mSet):
         print ("Found both: " + str(x))
         print ("First: "  + first)
         print ("Last: " + last)
@@ -46,14 +45,14 @@ def fibLower():
   for x in range(1000):
     arg = fib.__next__()  
   x = 1000
+  comp = set("123456789")
   while x < 1000000:
     #Alrighty calculated 1000 (starting at 0) so we start at 10001 so we don't have to be base 0
     x +=1
     arg = fib.__next__()  
     arg = str(arg)
     last = arg[-9:]
-    if ('1' in last and '2' in last and '3' in last and '4' in last 
-        and '5' in last and '6' in last and '7' in last and '8' in last and '9' in last):
+    if (set(last) == comp):
       #print ("Last: " + str(x))
       results += (x,)
   return results
@@ -62,13 +61,13 @@ def fibLower():
 def findFib(index):
   fib = fibonacciFastGrow(index)  
   n = 0
+  comp = set("123456789")
   while n < index:
     arg = fib.__next__()
     n = arg[2]
   print("N: " + str(arg[2]))
   first = str(arg[1])[:9]
-  if ('1' in first and '2' in first and '3' in first and '4' in first 
-      and '5' in first and '6' in first and '7' in first and '8' in first and '9' in first):
+  if (set(first) == comp):
     print(arg[1],arg[2])
     exit()
   else:
