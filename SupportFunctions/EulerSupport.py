@@ -53,7 +53,7 @@ def getPrimes(n):
   for x in range(3,n+1,2):
     isPrime = True
     for prime in list:
-      if prime < (x / 2)+1:
+      if prime < (x ** .5)+1:
         if x % prime == 0:
           isPrime = False
       else:
@@ -61,11 +61,33 @@ def getPrimes(n):
     if isPrime:
       list.append(x)
   return list
+
   
+
+def getPrimeGen(n):
+  yield 2
+  list = [2]
+  for x in range(3,n+1,2):
+    isPrime = True
+    for prime in list:
+      if prime < (x ** .5)+1:
+        if x % prime == 0:
+          isPrime = False
+      else:
+        break
+    if isPrime:
+      list.append(x)
+      yield x
+  yield None
+
+#Instead of getting all the primes in advance I should build this as a generating functions
 def isPrime(num):
-  n = math.ceil(num/2)+1
-  list = getPrimes(n)
-  for prime in list:
+  n = math.ceil((num ** .5)+1)
+  primeGen = getPrimeGen(n)
+
+  for prime in primeGen:
+    if prime == None:
+      return True
     if num % prime == 0:
       return False
   return True
