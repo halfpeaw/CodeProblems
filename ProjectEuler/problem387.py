@@ -26,7 +26,7 @@ getNum = lambda nums: sum(digit * 10 ** (len(nums) - 1 - i) for i, digit in enum
 
 #
 #First Solution is on top, it was a bruteish force way of solving the problem when my fast
-#Approach wasn't working.  I did the simplie way first so I could confirm its results against 
+#Approach wasn't working.  I did the simpler way first so I could confirm its results against 
 #The Fast way.
 
 
@@ -42,7 +42,7 @@ def isPrimeHarshad(num):
       return recursiveHarshad(list_of_ints[:-1])
   return False
 
-#Determine if a number and all previous our Harshard
+#Determine if a number and all previous are Harshard
 def recursiveHarshad(listInts):
   #print(listInts)
   if len(listInts) <= 1:
@@ -104,7 +104,7 @@ def findSumFast(n):
   num = [0]*20
   # We default to 100 because 0-99 are not valid answers
   num[-3] = 1
-  #So we don't have to constantly computer length
+  #So we don't have to constantly compute length
   TOP = len(num)-1
   i = TOP - 2
   #while num[0] < 10:
