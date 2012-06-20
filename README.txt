@@ -1,4 +1,4 @@
-This Repo contains a sample of python code that I have done outside of work.  Mostly in relationship to Project Euler problems or the occasionally puzzle I stumble across on the internet.  There's not a lot of Object Oriented code here, mostly because the problems are usually straight forward enough to not require a large amount of data structures.
+This Repo contains a sample of python code that I have done outside of work.  Mostly in relationship to Project Euler problems or the occasional puzzle I stumble across on the internet.  There's not a lot of Object Oriented code here, mostly because the problems are usually straight forward enough to not require a large amount of data structures.
 
 The SupportFunctions folder contains helper functions that I expand on when needed for the problems I am working on.  I only add new functions if I think they will be needed for future problems.
 
