@@ -93,35 +93,18 @@ def getPrimes(n):
       list.append(x)
   return list
 
-  
-
 def getPrimeGen(n):
   yield 2
   list = [2]
   for x in range(3,n+1,2):
-    isPrime = True
-    for prime in list:
-      if prime < (x ** .5)+1:
-        if x % prime == 0:
-          isPrime = False
-      else:
-        break
-    if isPrime:
+    if (miller_rabin(x)):
       list.append(x)
       yield x
   yield None
 
 #Instead of getting all the primes in advance I should build this as a generating functions
 def isPrime(num):
-  n = math.ceil((num ** .5)+1)
-  primeGen = getPrimeGen(n)
-
-  for prime in primeGen:
-    if prime == None:
-      return True
-    if num % prime == 0:
-      return False
-  return True
+  return miller_rabin(num)
 
 
 def printTiming(func):
@@ -134,7 +117,36 @@ def printTiming(func):
     return wrapper
   
 def listPrimeComponents(num):
-  print("List of Prime Components")
-  
+  if isPrime(num):
+    return [num]
+  p_list = []
+  if (num % 2 == 0):
+    p_list = [2]
+  while (num % 2 == 0):
+    num = int(num / 2)
+  for n in range(3,num+1,2):
+    if isPrime(num):
+      p_list.append(num)
+      return p_list
+    if isPrime(n):
+      isPart = False
+      while (num % n == 0):
+        isPart = True
+        num = int(num / n)
+      if isPart:
+        p_list.append(n)
+  #print (p_list)
+  return p_list
+
+  #Returns a list of primes and their counts
+#So ((prime1,count1) (prime2, count2))
 def countPrimeComponents(num):
-  print("Count of each prime component")
+  p_list = listPrimeComponents(num)
+  components = []
+  for prime in p_list:
+    count = 0
+    while num % prime == 0:
+      count +=1
+      num = int(num / prime)
+    components.append((prime,count))
+  return components
