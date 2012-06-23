@@ -3,7 +3,7 @@ import re
 import math
 import random
 import sys
-
+import time
 
 def miller_rabin_pass(a, s, d, n):
     a_to_power = pow(a, d, n)
@@ -123,6 +123,16 @@ def isPrime(num):
       return False
   return True
 
+
+def printTiming(func):
+    def wrapper(*arg):
+        t1 = time.time()
+        res = func(*arg)
+        t2 = time.time()
+        print ('%s took %0.3f ms' % (func.__name__, (t2-t1)*1000.0))
+        return res
+    return wrapper
+  
 def listPrimeComponents(num):
   print("List of Prime Components")
   
