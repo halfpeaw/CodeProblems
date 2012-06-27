@@ -1,3 +1,5 @@
+#ATTENTION THIS CODE IS OBVIOUSLY NOT FINISHED I ACCIDENTLY CHECKED IT IN
+
 #Problem 386
 #Let n be an integer and S(n) be the set of factors of n.
 #
