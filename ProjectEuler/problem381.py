@@ -57,7 +57,7 @@ def getS(p):
   total %= p
   return total
 
-#What the fuck! An answer I found online taking advantage of the reduce williams theory about 8x faster than mine
+#An answer I found online taking advantage of the reduce williams theory about 8x faster than mine.   See their description below
 #Yes. A simple way. -3 == kp-3 (mod p) for any k. As p and 8 are coprime, we can divide by 8 
 #(multiply by modInv(8,p)) -3/8 == (kp-3)/8 (mod p). Now for given p, what is the smallest k>0 
 #to have (kp-3) being divisible by 8. Since p*p==1 (mod 8) for every prime >2, also 3p*p==3 (mod 8), so smallest such k is k=3p%8.
@@ -73,7 +73,8 @@ def S(p):
   return (k*p - 3) // 8
   
 #Stole this generator when creating primes > 10^6 my normal prime gen gets to burdensome
-#Could just steal a pre made library but generating primes seems important and didn't want to optimize away.  
+#Could just steal a pre made library but generating primes seems important and didn't want to optimize away. 
+#Additionally wanted my code to not be dependent on non-native libraries 
 #This sieve is customized to skip 2,3
 def sieveGen( ):
     D = { 9: 3, 25: 5 }

@@ -120,11 +120,14 @@ def listPrimeComponents(num):
   if isPrime(num):
     return [num]
   p_list = []
+  #Do this so I can easily start at 3
   if (num % 2 == 0):
     p_list = [2]
   while (num % 2 == 0):
     num = int(num / 2)
   for n in range(3,num+1,2):
+    #Is our new number prime?  Then no more divisors and leave
+    #The location of this seems wrong but if I put it in the isPart condition I go 3x slower
     if isPrime(num):
       p_list.append(num)
       return p_list
@@ -135,6 +138,8 @@ def listPrimeComponents(num):
         num = int(num / n)
       if isPart:
         p_list.append(n)
+        
+        
   #print (p_list)
   return p_list
 
