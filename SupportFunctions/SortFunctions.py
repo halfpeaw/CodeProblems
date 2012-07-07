@@ -57,12 +57,48 @@ def PythonSort(nums):
 def MergeSort(nums):
   None
   
+
+#Sort by bit, only works when doing positive integers
+#Determines greatest in list and use that as our max bit for sorting purposes
+#Then recursively solve bit by bit
+#O(k*n) where k is how many bits we need to search over.
+@EulerSupport.printTiming  
+def radixSort(nums):
+  biggest = max(nums)
+  #Turn to a binary string
+  biggest = bin(biggest)[2:]
+  #For example if our biggest num is 10 => 1010 then k will be 3 aka 2^3 = 8
+  k = len(biggest) - 1 # our range will be k-1 .. 0
+  less, greater = radixSplit(nums,k)
+  return (less+greater)
+  
+#This does the recurssion of RadixSort, return when k == 0
+#We generate a list based on the current bit we are looking at based on k.  So if Kth bit == 1
+#Go to the greater list, else go to the less list
+def radixSplit(nums, k):
+  less = []
+  greater = []
+  for num in nums:
+    if num & 2**k:
+      greater.append(num)
+    else:
+      less.append(num)
+  if k == 0:
+    return less, greater
+  else:
+    lessSmall, lessBig = radixSplit(less,k-1)
+    greaterSmall, greaterBig = radixSplit(greater,k-1)
+    return (lessSmall + lessBig), (greaterSmall + greaterBig)
+  
   
 if __name__ == "__main__":
   nums = [2,4,4,6,1,7,9,8,9,1,0,11]*250
   Bubble(nums)
   nums = [2,4,4,6,1,7,9,8,9,1,0,11]*250
   QuickSortCall(nums)
-  nums = [2,4,4,6,1,7,9,8,9,1,0,11]*5000
+  nums = [2,4,4,6,1,7,9,8,9,1,0,11]*500
   PythonSort(nums)
+  nums = [2,4,4,6,1,7,9,8,9,1,11,513]*500
+  radixSort(nums)
+  
   

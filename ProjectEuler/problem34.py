@@ -11,8 +11,6 @@ sys.path.append("../SupportFunctions/")
 import EulerSupport
 import math
 
-global total60
-total60 = [0]
 factList = {"0":1,"1":1,"2":2,"3":6,"4":24,"5":120,"6":720,"7":5040,"8":40320,"9":362880}
 #Upper limit of 3,000,000 is arbituary basically can't ever have more than 7*9! just wanted to be safe
 #This problem was super easy after solving problem 74.  Used the dictionary for fast look up.
