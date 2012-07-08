@@ -53,9 +53,52 @@ def QuickSort(nums):
 def PythonSort(nums):
   return sorted(nums)
 
-#Todo
+@EulerSupport.printTiming
+def MergeSortCall(nums):
+  return MergeSort(nums)
+
+#O(n log n) complexity
+#Basically break down the big list in to lots of smaller lists a half at a time and then merge them together
+#Which becomes trivial when they are ordered.
+#I wonder if there's a way I can skip the breaking down step and just start off with individual parts.  
 def MergeSort(nums):
-  None
+  if len(nums) <= 1:
+    return nums
+  left = []
+  right = []
+  if len(nums) % 2 == 0:
+    middle = int(len(nums)/2)
+  else:
+    middle = int((len(nums) - 1) / 2)
+  for i in range(0,middle):
+    left.append(nums[i])
+  for i in range(middle, len(nums)):
+    right.append(nums[i])
+  left = MergeSort(left)
+  right = MergeSort(right)
+  #Merge the sublists returned from the MergeSort
+  #Return the resulting merge sublists
+  return Merge(left,right)
+
+#Left and Right are sorted going in to this function
+#Since the lists are sorted its an N operation to bring them back together.
+def Merge(left,right):
+  result = []
+  while len(left) > 0 or len(right) > 0: 
+    if len(left) > 0 and len(right) > 0:
+      if left[0] <= right[0]:
+        result.append(left[0])
+        left = left[1:]
+      else:
+        result.append(right[0])
+        right = right[1:]
+    elif len(left) > 0:
+      result.append(left[0])
+      left = left[1:]
+    elif len(right) > 0:
+      result.append(right[0])
+      right = right[1:]
+  return result
   
 
 #Sort by bit, only works when doing positive integers
@@ -96,9 +139,12 @@ if __name__ == "__main__":
   Bubble(nums)
   nums = [2,4,4,6,1,7,9,8,9,1,0,11]*250
   QuickSortCall(nums)
-  nums = [2,4,4,6,1,7,9,8,9,1,0,11]*500
-  PythonSort(nums)
-  nums = [2,4,4,6,1,7,9,8,9,1,11,513]*500
+  nums = [2,4,4,6,1,7,9,8,9,1,0,11]*250
+  MergeSortCall(nums)
+  nums = [2,4,4,6,1,7,9,8,9,1,0,11]*250
   radixSort(nums)
+  nums = [2,4,4,6,1,7,9,8,9,1,0,11]*250
+  PythonSort(nums)
+  
   
   
