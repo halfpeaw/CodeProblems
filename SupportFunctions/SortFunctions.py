@@ -133,18 +133,36 @@ def radixSplit(nums, k):
     greaterSmall, greaterBig = radixSplit(greater,k-1)
     return (lessSmall + lessBig), (greaterSmall + greaterBig)
   
-  
+#Heap sort totally done based on dictionary though one fatal flaw
+#Duplicate numbers are not treated indivually so this is not a stable sorting algorithm
+#Run time is o(2N) though Wiki tells me it is worst case O(n log n)
+#I'm thinking the hash table stuff for python does some magic that I'm not seeing
+@EulerSupport.printTiming 
+def heapSort(nums):
+  dict = {}
+  result = []
+  for num in nums:
+    if num in dict:
+      dict[num]+=1
+    else:
+      dict[num] = 1
+  for num in dict:
+    while dict[num] > 0:
+      result.append(num)
+      dict[num]-=1
+  return result
 if __name__ == "__main__":
-  nums = [2,4,4,6,1,7,9,8,9,1,0,11]*250
-  Bubble(nums)
-  nums = [2,4,4,6,1,7,9,8,9,1,0,11]*250
+  nums = [2,4,4,6,1,7,9,8,9,1,0,11,2**8]*250
+  #Bubble(nums)
+  nums = [2,4,4,6,1,7,9,8,9,1,0,11,2**8]*250
   QuickSortCall(nums)
-  nums = [2,4,4,6,1,7,9,8,9,1,0,11]*250
+  nums = [2,4,4,6,1,7,9,8,9,1,0,11,2**8]*250
   MergeSortCall(nums)
-  nums = [2,4,4,6,1,7,9,8,9,1,0,11]*250
+  nums = [2,4,4,6,1,7,9,8,9,1,0,11,2**8]*10000
   radixSort(nums)
-  nums = [2,4,4,6,1,7,9,8,9,1,0,11]*250
+  nums = [2,4,4,6,1,7,9,8,9,1,0,11,2**8]*10000
   PythonSort(nums)
-  
+  nums = [2,4,4,6,1,7,9,8,9,1,0,11,2**8]*10000
+  heapSort(nums)
   
   
