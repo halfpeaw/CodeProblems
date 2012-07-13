@@ -1,3 +1,4 @@
+package flowGUIClient;
 
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -57,7 +58,6 @@ public class BuildGUI extends JFrame implements MouseListener, MouseMotionListen
 		this.setResizable(true);
 		this.setLocationRelativeTo( null );
 	  	this.setVisible(true);
-		
 	}
 	/**
 	 * We separate this from the constructor so we can easily instantiate the board
@@ -121,14 +121,23 @@ public class BuildGUI extends JFrame implements MouseListener, MouseMotionListen
 	}
 	/**
 	 * 
-	 * TODO Set the GUI Piece used by outside methods only.
+	 * Set the GUI Piece used by outside methods only.
 	 *
-	 * @param row
-	 * @param column
-	 * @param color
+	 * @param row - Remember range 0 .. GameEngine.SIZE
+	 * @param column Remember range 0 .. GameEngine.SIZE
+	 * @param color based off of static fields in GameEngine
 	 */
 	public void setGUIPiece(int row, int column, int color) {
-		ImagePanel panel = (ImagePanel)gameBoardPanel.getComponentAt(row,column);
+		ImagePanel panel = (ImagePanel)this.gameBoardPanel.getComponent(row*GameEngine.SIZE+column);
+		if (color == GameEngine.IS_GREEN) {
+			panel.add(new JLabel( new ImageIcon("./resources/Green.gif") ));
+		} else if (color == GameEngine.IS_BLUE) {
+			panel.add(new JLabel( new ImageIcon("./resources/Blue.gif") ));
+		} else {
+			System.out.println("Bad color provided");
+		}
+		this.validate();
+		this.repaint();
 	}
 	/***
 	 * This function will handle setting pieces on the board from the user.

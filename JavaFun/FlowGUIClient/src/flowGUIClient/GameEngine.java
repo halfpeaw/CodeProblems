@@ -1,3 +1,4 @@
+package flowGUIClient;
 
 /**
  * TODO This class controls the internal functions of the game
