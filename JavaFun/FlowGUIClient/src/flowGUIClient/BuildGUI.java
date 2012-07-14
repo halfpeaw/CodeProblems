@@ -13,6 +13,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.*;
 
+import messageGUI.*;
+
 
 /**
  * TODO Put here a description of what this class does.
@@ -23,10 +25,11 @@ import javax.swing.*;
 public class BuildGUI extends JFrame implements MouseListener, MouseMotionListener, ActionListener {
 	private JPanel gameBoardPanel;
 	private boolean playerOneTurn = true;
-	private GameEngine engine;
 	private Dimension boardSize = new Dimension(640, 640);
+	private Dimension messageSize = new Dimension(300, 640);
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu menu = new JMenu("File");
+	private JPanel msgPanel = new JPanel();
 		
 	/**
 	 * TODO Put here a description of this field.
@@ -36,9 +39,12 @@ public class BuildGUI extends JFrame implements MouseListener, MouseMotionListen
 	 * TODO This constructor is build the panel used for displaying out problems.
 	 *
 	 */
-	public BuildGUI(GameEngine engine) {
+	public BuildGUI() {
 		super("My Frame");
-		this.engine = engine;
+		MsgGUIBase connectPanel = new ConnectMsgGUI();
+		JPanel bigPanel = new JPanel();
+		//bigPanel.setLayout(new GridLayout(1,2));
+		bigPanel.setSize(new Dimension(640,740));
 		this.menuBar.add(this.menu);
 		JMenuItem menuItem = new JMenuItem("Reset");
 		menuItem.addActionListener(this);
@@ -46,14 +52,20 @@ public class BuildGUI extends JFrame implements MouseListener, MouseMotionListen
 		this.setJMenuBar(this.menuBar);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.layeredPane = new JLayeredPane();
-		getContentPane().add(this.layeredPane);
-	  	this.layeredPane.setPreferredSize(boardSize);
+		//getContentPane().add(this.layeredPane);
+		//gamePanel.add(this.layeredPane);
+	  	this.layeredPane.setPreferredSize(this.boardSize);
 	  	this.layeredPane.addMouseListener(this);
 	  	this.layeredPane.addMouseMotionListener(this);
 	  	this.gameBoardPanel = new JPanel();
 	  	this.layeredPane.add(this.gameBoardPanel, JLayeredPane.DEFAULT_LAYER);
+	  	bigPanel.add(this.layeredPane);
+	  	//this.msgPanel.setPreferredSize(this.messageSize);
+	  	//this.msgPanel.add(new JButton("Push me"));
+	  	bigPanel.add(new JButton("Send"));
+	  	bigPanel.add(connectPanel);
 	  	this.newBoard();
-		//Needed to properly setup jframe
+	  	this.add(bigPanel);
 	  	this.pack();
 		this.setResizable(true);
 		this.setLocationRelativeTo( null );
@@ -69,9 +81,9 @@ public class BuildGUI extends JFrame implements MouseListener, MouseMotionListen
 	  	this.gameBoardPanel.setLayout( new GridLayout(8, 8) );
 	  	this.gameBoardPanel.setPreferredSize(this.boardSize);
 	  	this.gameBoardPanel.setBounds(0,0,this.boardSize.width,this.boardSize.height);
-	  	for (int i = 0; i < GameEngine.SIZE*GameEngine.SIZE; i++) {
-	  		int column = i % GameEngine.SIZE;
-	  		int row = i / GameEngine.SIZE;
+	  	for (int i = 0; i < GameInfo.SIZE*GameInfo.SIZE; i++) {
+	  		int column = i % GameInfo.SIZE;
+	  		int row = i / GameInfo.SIZE;
 	  		if ((row % 2 == 0 && column % 2 == 0) || (row % 2 == 1 && column % 2 == 1))
 	  			this.gameBoardPanel.add(new ImagePanel("./resources/Black_Empty.gif", row, column));
 	  		else
@@ -79,7 +91,6 @@ public class BuildGUI extends JFrame implements MouseListener, MouseMotionListen
 	  	}
 	  	this.validate();
 		this.repaint();
-		this.engine.clearBoard();
 	}
 	
 	
@@ -123,15 +134,15 @@ public class BuildGUI extends JFrame implements MouseListener, MouseMotionListen
 	 * 
 	 * Set the GUI Piece used by outside methods only.
 	 *
-	 * @param row - Remember range 0 .. GameEngine.SIZE
-	 * @param column Remember range 0 .. GameEngine.SIZE
-	 * @param color based off of static fields in GameEngine
+	 * @param row - Remember range 0 .. GameInfo.SIZE
+	 * @param column Remember range 0 .. GameInfo.SIZE
+	 * @param color based off of static fields in GameInfo
 	 */
 	public void setGUIPiece(int row, int column, int color) {
-		ImagePanel panel = (ImagePanel)this.gameBoardPanel.getComponent(row*GameEngine.SIZE+column);
-		if (color == GameEngine.IS_GREEN) {
+		ImagePanel panel = (ImagePanel)this.gameBoardPanel.getComponent(row*GameInfo.SIZE+column);
+		if (color == GameInfo.IS_GREEN) {
 			panel.add(new JLabel( new ImageIcon("./resources/Green.gif") ));
-		} else if (color == GameEngine.IS_BLUE) {
+		} else if (color == GameInfo.IS_BLUE) {
 			panel.add(new JLabel( new ImageIcon("./resources/Blue.gif") ));
 		} else {
 			System.out.println("Bad color provided");
@@ -153,12 +164,12 @@ public class BuildGUI extends JFrame implements MouseListener, MouseMotionListen
 		  int result = 0;
 		  if (this.playerOneTurn) {
 			  panel.add(new JLabel( new ImageIcon("./resources/Green.gif") ));
-			  result = this.engine.setBoardPiece(panel.row, panel.column, GameEngine.IS_GREEN);
+			  //result = this.engine.setBoardPiece(panel.row, panel.column, GameInfo.IS_GREEN);
 		  } else {
 			  panel.add(new JLabel( new ImageIcon("./resources/Blue.gif") ));
-			  result = this.engine.setBoardPiece(panel.row, panel.column, GameEngine.IS_BLUE);
+			  //result = this.engine.setBoardPiece(panel.row, panel.column, GameInfo.IS_BLUE);
 		  }
-		  if (result != GameEngine.IS_EMPTY) {
+		  if (result != GameInfo.IS_EMPTY) {
 			  System.out.println("We have a winner! " + result);
 		  }
 		  this.playerOneTurn = !this.playerOneTurn;

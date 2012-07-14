@@ -8,6 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
 
+
+
 /**
  * TODO Put here a description of what this class does.
  *
@@ -20,6 +22,7 @@ public class GameServer {
 	 *
 	 */
 	public GameServer() {
+		
 		//We need a try-catch because lots of errors can be thrown
 		try {
             ServerSocket serverSocket = new ServerSocket(1231);

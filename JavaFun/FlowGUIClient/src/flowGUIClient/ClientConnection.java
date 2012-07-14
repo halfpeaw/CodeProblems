@@ -2,6 +2,7 @@ package flowGUIClient;
 
 import java.net.*;
 import java.io.*;
+import messageObjects.ConnectMsg;
 
 /**
  * TODO Put here a description of what this class does.
@@ -11,44 +12,45 @@ import java.io.*;
  */
 public class ClientConnection {
 	public ClientConnection() {
-	Socket echoSocket = null;
-	OutputStream out = null;
-	InputStream in = null;
-    try {
-        echoSocket = new Socket("localhost", 1231);
-        out = echoSocket.getOutputStream();
-        in = echoSocket.getInputStream();
-    } catch (UnknownHostException e1) {
-        System.err.println("Don't know about host: localhost.");
-        System.exit(1);
-    } catch (IOException e2) {
-        System.err.println("Couldn't get I/O for "
-                           + "the connection to: localhost.");
-        System.exit(1);
-    }
-    
-
-	byte[] bytesIn = new byte[100];
-	int len = 0;
-	try {
-		out.write(1);
-	    out.write(2);
-	    out.write(3);
-		while ((len = in.read(bytesIn)) != -1) {
-			String outString = "";
-            for (int i = 0; i < len; i++) {
-            	outString += Integer.toHexString(bytesIn[i]) + " ";
-            }
-            System.out.println(outString);
+		ConnectMsg connect = new ConnectMsg();
+		connect.setName("AlexHalfpenny");
+		Socket echoSocket = null;
+		OutputStream out = null;
+		InputStream in = null;
+	    try {
+	        echoSocket = new Socket(connect.getHostName(), connect.getPort());
+	        out = echoSocket.getOutputStream();
+	        in = echoSocket.getInputStream();
+	    } catch (UnknownHostException e1) {
+	        System.err.println("Don't know about host: localhost.");
+	        System.exit(1);
+	    } catch (IOException e2) {
+	        System.err.println("Couldn't get I/O for "
+	                           + "the connection to: localhost.");
+	        System.exit(1);
+	    }
+	    
+	
+		byte[] bytesIn = new byte[100];
+		int len = 0;
+		try {
+			connect.setDefaultFields(1);
+			out.write(connect.buildIntArray());
+			while ((len = in.read(bytesIn)) != -1) {
+				String outString = "";
+	            for (int i = 0; i < len; i++) {
+	            	outString += Integer.toHexString(bytesIn[i]) + " ";
+	            }
+	            System.out.println(outString);
+			}
+			out.close();
+			in.close();
+			echoSocket.close();
+		} catch (IOException exception) {
+			// TODO Auto-generated catch-block stub.
+			exception.printStackTrace();
 		}
-		out.close();
-		in.close();
-		echoSocket.close();
-	} catch (IOException exception) {
-		// TODO Auto-generated catch-block stub.
-		exception.printStackTrace();
+		
+		
+		}
 	}
-	
-	
-	}
-}

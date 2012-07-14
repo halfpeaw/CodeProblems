@@ -1,4 +1,4 @@
-package flowGUIClient;
+package flowGameServer;
 
 /**
  * TODO This class controls the internal functions of the game
@@ -24,7 +24,7 @@ public class GameEngine {
 	 * @param row
 	 * @param column
 	 * @param color
-	 * @return
+	 * @return return 0 if no winner, return int of winner
 	 */
 	public int setBoardPiece(int row, int column, int color) {
 		if (color != IS_GREEN && color != IS_BLUE) {
