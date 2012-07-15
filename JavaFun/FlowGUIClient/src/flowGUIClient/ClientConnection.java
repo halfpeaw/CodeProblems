@@ -43,6 +43,21 @@ public class ClientConnection implements Runnable {
 			case Globals.CONNECT_RESP:
 				parent.connectPanel.receiveResponse(new ConnectResp(bytesIn));
 				break;
+			case Globals.DISCONNECT:
+				System.out.println("Received Disconnect Message");
+				try {
+					gameSocket.close();
+					this.out.close();
+					this.in.close();
+					this.out = null;
+					this.in = null;
+					this.gameSocket = null;
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
+				
+				break;
 			default:
 				System.out.println("Message Type: " + msgId + " not recongized");
 		}

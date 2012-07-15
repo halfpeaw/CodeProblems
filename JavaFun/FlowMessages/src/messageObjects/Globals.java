@@ -9,7 +9,19 @@ package messageObjects;
 public class Globals {
 	public final static int CONNECT_TYPE = 0x0001;
 	public final static int CONNECT_RESP = 0x0002;
+	public final static int DISCONNECT = 0x0003;
+	public final static int GET_PLAYERS_MSG = 0x0004;
 
+	//Status Code
+	public final static int COMMAND_MSG = 0x0000;
+	public final static int USERNAME_IN_USE = 0x0001;
+	public final static int UNKNOWN_FAILURE = 0x0002;
+	//I'm so used to this being 3 from work I am just going with it.
+	public final static int SUCCESS = 0x0003;
+	
+	
+	public final static int IS_HUMAN = 0x00;
+	public final static int IS_AI = 0xFF;
 	/**
 	 * 
 	 * Sets the value of val in to byteIn
@@ -79,6 +91,9 @@ public class Globals {
 			case 2:
 				number = (byteIn[offset]&0xff) << 8 | (byteIn[offset+1]&0xff);
 				break;
+			case 1:
+				number = (byteIn[offset]&0xff);
+				break;
 			default:
 				break;
 		}
@@ -125,7 +140,11 @@ public class Globals {
 			return "";
 		}
 		for (int i = offset; i <offset+length; i++) {
-			result += (char)byteIn[i];
+			if (byteIn[i] != 0) {
+				result += (char)byteIn[i];
+			} else {
+				return result;
+			}
 		}
 		return result;
 	}

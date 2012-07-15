@@ -6,9 +6,12 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Random;
+import java.util.Set;
 
 import messageObjects.*;
 
@@ -25,28 +28,21 @@ public class GameServer {
 	 * Constructor for the game server
 	 *
 	 */
-	public HashMap<Integer, ClientThread> hmap = new HashMap<Integer, ClientThread>();
+	public HashMap<String, ClientThread> hmap = new HashMap<String, ClientThread>();
 	public MessageHandler handler = new MessageHandler(this);
 	public GameServer() {
 		
 		//We need a try-catch because lots of errors can be thrown
 		try {
-			Random randomGenerator = new Random();
+			hmap.clear();
             ServerSocket serverSocket = new ServerSocket(1231);
             System.out.println("Server started at: " + new Date());
             //Loop that runs server functions
             while(true) {
                 //Wait for a client to connect
                 Socket socket = serverSocket.accept();
-                int userId =  0;
-                do {
-                	userId =  randomGenerator.nextInt(32000);
-                } while (hmap.containsKey(userId));
-                
-                System.out.println("User ID: "+userId + " Just Joined");
                 //Create a new custom thread to handle the connection
-                ClientThread cT = new ClientThread(this,socket, userId);
-                hmap.put(userId, cT);
+                ClientThread cT = new ClientThread(this,socket);
                  
                 //Start the thread!
                 new Thread(cT).start();
@@ -60,15 +56,15 @@ public class GameServer {
 	 * userId is the destination Id affiliated with the client.  
 	 * Debating if userId can be removed as an argument and just passed via the message
 	 */
-	public void sendMessage(MessageStruct msg, int userId) {
+	public void sendMessage(MessageStruct msg, String name) {
     	msg.buildIntArray(1);
-		(hmap.get(userId)).sendMessage(msg.getBytes());
+		(hmap.get(name)).sendMessage(msg.getBytes());
     }
-	public void receiveMessage(byte[] bytesIn, int userId) {
-		handler.handleMsg(bytesIn, userId);
+	public void receiveMessage(byte[] bytesIn, String name) {
+		handler.handleMsg(bytesIn, name);
 	}
-	public void removeSocket(int userId) {
-		hmap.remove(userId);
+	public void removeSocket(String name) {
+		hmap.remove(name);
 	}
  
     /**
@@ -89,12 +85,11 @@ public class GameServer {
         OutputStream output = null;
         GameServer server = null;
         InputStream input = null;
-        int userId = 0;
-        public ClientThread(GameServer server, Socket socket, int userId)
+        String name = "Empty";
+        public ClientThread(GameServer server, Socket socket)
         {
             //Here we set the socket to a local variable so we can use it later
             this.threadSocket = socket;
-            this.userId = userId;
             this.server = server;
         }
          
@@ -117,12 +112,32 @@ public class GameServer {
                     	outString += Integer.toHexString(bytesIn[i]) + " ";
                     }
                     System.out.println(outString);
-                    receiveMessage(bytesIn,this.userId);
+                    if (Globals.CONNECT_TYPE == Globals.getMsgUserIDFromArray(bytesIn)) {
+                    	ConnectMsg msg = new ConnectMsg(bytesIn);
+                    	
+                    	this.name = msg.getName();
+                    	if (!server.hmap.containsKey(this.name)) {
+                    		server.hmap.put(this.name, this);
+                    	} else {
+                    		//Send a bad response
+                    		/*Set<String> keys = server.hmap.keySet();
+                    		Iterator<String> e =  keys.iterator(); 
+                    		while(e.hasNext()) {
+                    			System.out.println("! " + e.next());
+                    		}*/
+                    		DisconnectMsg discMsg = new DisconnectMsg();
+                    		discMsg.buildIntArray(0);
+                    		output.write(discMsg.getBytes());
+                    		System.out.println("Duplicate Name: " + this.name);
+                    		return;
+                    	}
+                    }
+                    receiveMessage(Arrays.copyOfRange(bytesIn, 0, len), this.name);
                 }
             } catch(IOException exception) {
                 System.out.println("Error: " + exception);
             }
-            server.removeSocket(this.userId);
+            server.removeSocket(this.name);
             
         }
         public boolean sendMessage(byte[] bytesOut) {
@@ -135,7 +150,5 @@ public class GameServer {
 			}
         	return true;
         }
-    }
-    
-    
+    } //End Classthread
 }

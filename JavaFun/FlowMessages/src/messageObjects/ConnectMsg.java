@@ -8,15 +8,12 @@ package messageObjects;
  *         Created Jul 13, 2012.
  */
 public class ConnectMsg extends MessageStruct {
-	private final static int MSG_LEN = 32;
-	private final static int NAME_LEN_OFFSET = 10;
-	private final static int NAME_LEN_SIZE = 2;
-	private final static int NAME_OFFSET = 12;
+	private final static int MSG_LEN = 24;
+	private final static int NAME_OFFSET = 8;
 	private final static int NAME_SIZE = 16;
 	private String name = "Name";
 	private String hostName ="localhost";
 	private int port = 1231;
-	private int nameLen = this.name.length();
 
 	public ConnectMsg() {
 		this.msgName = "ConnectMsg";
@@ -25,17 +22,13 @@ public class ConnectMsg extends MessageStruct {
 		this.messageArray = new byte[this.messageLen];
 	}
 	public ConnectMsg(byte[]bytesIn) {
+		super(bytesIn);
 		this.msgName = "ConnectMsg";
-		this.messageArray = bytesIn;
-		this.messageLen = MSG_LEN;
 		this.messageType = Globals.CONNECT_TYPE;
-		this.nameLen = Globals.getValue(NAME_LEN_OFFSET, NAME_LEN_SIZE, this.messageArray);
-		this.name = Globals.readArrayString(NAME_OFFSET,this.nameLen,this.messageArray);
+		this.name = Globals.readArrayString(NAME_OFFSET, NAME_SIZE, this.messageArray);
 	}
 	
 	public boolean buildIntArray(int msgId) {
-		this.nameLen = this.name.length();
-		Globals.setValue(NAME_LEN_OFFSET, NAME_LEN_SIZE, this.nameLen, this.messageArray);
 		Globals.fillArrayString(NAME_OFFSET, NAME_SIZE, this.name, this.messageArray);
 		super.buildIntArray(msgId);
 		return true;
@@ -64,7 +57,6 @@ public class ConnectMsg extends MessageStruct {
 			System.out.println("Name has a " + NAME_SIZE + " char max");
 		}
 		this.name = name;
-		this.nameLen = name.length();
 		
 	}
 	public String getName() {

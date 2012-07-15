@@ -28,7 +28,7 @@ public class ConnectMsgGUI extends MsgGUIBase {
 	private JTextField nameTextField;
 	private JTextField portTextField;
 	private JTextField ipTextField;
-	private JTextField userIdTextField;
+	private JTextField statusTextField;
 	public ConnectMsgGUI(MainGUI mainGUI) {
 		super(mainGUI);
 		GridBagLayout gridBagLayout = (GridBagLayout) getLayout();
@@ -99,23 +99,23 @@ public class ConnectMsgGUI extends MsgGUIBase {
 		add(nameTextField, gbc_nameTextField);
 		nameTextField.setColumns(10);
 		
-		JLabel lblUserId = new JLabel("User ID");
-		GridBagConstraints gbc_lblUserId = new GridBagConstraints();
-		gbc_lblUserId.insets = new Insets(0, 0, 5, 5);
-		gbc_lblUserId.anchor = GridBagConstraints.EAST;
-		gbc_lblUserId.gridx = 0;
-		gbc_lblUserId.gridy = 5;
-		add(lblUserId, gbc_lblUserId);
+		JLabel lblStatus = new JLabel("Status: ");
+		GridBagConstraints gbc_lblStatus = new GridBagConstraints();
+		gbc_lblStatus.insets = new Insets(0, 0, 5, 5);
+		gbc_lblStatus.anchor = GridBagConstraints.EAST;
+		gbc_lblStatus.gridx = 0;
+		gbc_lblStatus.gridy = 5;
+		add(lblStatus, gbc_lblStatus);
 		
-		userIdTextField = new JTextField();
-		userIdTextField.setEditable(false);
-		GridBagConstraints gbc_userIdTextField = new GridBagConstraints();
-		gbc_userIdTextField.insets = new Insets(0, 0, 5, 80);
-		gbc_userIdTextField.fill = GridBagConstraints.HORIZONTAL;
-		gbc_userIdTextField.gridx = 1;
-		gbc_userIdTextField.gridy = 5;
-		add(userIdTextField, gbc_userIdTextField);
-		userIdTextField.setColumns(10);
+		statusTextField = new JTextField();
+		statusTextField.setEditable(false);
+		GridBagConstraints gbc_statusTextField = new GridBagConstraints();
+		gbc_statusTextField.insets = new Insets(0, 0, 5, 80);
+		gbc_statusTextField.fill = GridBagConstraints.HORIZONTAL;
+		gbc_statusTextField.gridx = 1;
+		gbc_statusTextField.gridy = 5;
+		add(statusTextField, gbc_statusTextField);
+		statusTextField.setColumns(10);
 		
 		JButton btnSend = new JButton("Send");
 		btnSend.addActionListener(new ActionListener() {
@@ -145,8 +145,8 @@ public class ConnectMsgGUI extends MsgGUIBase {
 	 */
 	public void receiveResponse(MessageStruct response) {
 		if (response.getMsgType() == Globals.CONNECT_RESP) {
-			userIdTextField.setText(""+((ConnectResp)response).getUserID());
-			this.mainGUI.gameInfo.userId = response.getMsgUserId();
+			statusTextField.setText(""+(response.getStatus()));
+			this.mainGUI.gameInfo.userId = response.getStatus();
 		} else {
 			System.out.println("Something went wrong...");
 		}
