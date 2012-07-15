@@ -53,7 +53,7 @@ public abstract class MessageStruct {
 	public final int getMsgUserId() {
 		return Globals.getValue(USER_OFFSET, USERID_LEN, this.messageArray);
 	}
-	protected boolean buildIntArray(int msgId) {
+	public boolean buildIntArray(int msgId) {
 		setDefaultFields(msgId);
 		return true;
 	}

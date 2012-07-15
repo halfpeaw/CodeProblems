@@ -12,4 +12,5 @@ public class GameInfo {
 	final static int IS_EMPTY = 0;
 	final static int SIZE = 8;
 	final static int WINLEN = 5;
+	public int userId = 0;
 }

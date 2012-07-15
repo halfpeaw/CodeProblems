@@ -146,6 +146,7 @@ public class ConnectMsgGUI extends MsgGUIBase {
 	public void receiveResponse(MessageStruct response) {
 		if (response.getMsgType() == Globals.CONNECT_RESP) {
 			userIdTextField.setText(""+((ConnectResp)response).getUserID());
+			this.mainGUI.gameInfo.userId = response.getMsgUserId();
 		} else {
 			System.out.println("Something went wrong...");
 		}

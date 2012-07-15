@@ -82,6 +82,8 @@ public class ClientConnection implements Runnable {
 	            	outString += Integer.toHexString(bytesIn[i]) + " ";
 	            }
 	            System.out.println(outString);
+	            receiveMessage(bytesIn);
+	            //bytesIn = new byte[1504];
 			}
 			out.close();
 			in.close();
@@ -89,11 +91,12 @@ public class ClientConnection implements Runnable {
 			gameSocket = null;
 			out = null;
 			in = null;
+			
 		} catch (IOException exception) {
 			// TODO Auto-generated catch-block stub.
 			exception.printStackTrace();
 		}
-
+		System.out.println("Exiting Thread");
 	}
 
 }

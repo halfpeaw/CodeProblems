@@ -33,7 +33,7 @@ public class MainGUI extends JFrame implements MouseListener, MouseMotionListene
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu menu = new JMenu("File");
 	public ClientConnection clientSocket = new ClientConnection(this);
-	
+	public GameInfo gameInfo = new GameInfo();
 	/*
 	 * The following are all the different GUI Panels used for the application
 	 */

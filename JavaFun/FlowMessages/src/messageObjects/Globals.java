@@ -69,15 +69,15 @@ public class Globals {
 		int number = 0;
 		switch(count) {
 			case 4:
-				number = byteIn[offset] << 24 | byteIn[offset+1] << 16 
-					| byteIn[offset+2] << 8 | byteIn[offset+3];
+				number = (byteIn[offset]&0xff) << 24 | (byteIn[offset+1]&0xff) << 16 
+					| (byteIn[offset+2]&0xff) << 8 | (byteIn[offset+3]&0xff);
 				break;
 			case 3:
-				number = byteIn[offset] << 16 
-				| byteIn[offset+1] << 8 | byteIn[offset+2];
+				number = (byteIn[offset]&0xff) << 16 
+				| (byteIn[offset+1]&0xff) << 8 | (byteIn[offset+2]&0xff);
 				break;
 			case 2:
-				number = byteIn[offset] << 8 | byteIn[offset+1];
+				number = (byteIn[offset]&0xff) << 8 | (byteIn[offset+1]&0xff);
 				break;
 			default:
 				break;
@@ -96,6 +96,7 @@ public class Globals {
 	 */
 	public static final boolean fillArrayString(int offset, int length, String word, byte[] byteIn) {
 		if (offset + length > byteIn.length) {
+			System.out.println("Word: " + word);
 			System.out.println("Size: " + offset + length + " versus "
 					+ byteIn.length + " is too great");
 			return false;
@@ -117,12 +118,13 @@ public class Globals {
 	 */
 	public static final String readArrayString(int offset, int length, byte[] byteIn) {
 		String result = "";
-		if (offset+length < byteIn.length) {
+		if (offset+length > byteIn.length) {
+			System.out.println("Read Array");
 			System.out.println("Size: " + offset + length + " versus "
 					+ byteIn.length + " is too great");
 			return "";
 		}
-		for (int i = offset; i <length; i++) {
+		for (int i = offset; i <offset+length; i++) {
 			result += (char)byteIn[i];
 		}
 		return result;

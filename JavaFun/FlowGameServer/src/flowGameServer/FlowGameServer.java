@@ -14,6 +14,6 @@ public class FlowGameServer {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		 new GameServer();
+		 new GameServer(); 
 	}
 }

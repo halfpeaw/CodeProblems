@@ -57,6 +57,9 @@ public class ConnectResp extends MessageStruct  {
 		this.nameLen = name.length();
 		
 	}
+	public String getName() {
+		return this.name;
+	}
 	public int getUserID() {
 		return this.userID;
 	}

@@ -67,4 +67,7 @@ public class ConnectMsg extends MessageStruct {
 		this.nameLen = name.length();
 		
 	}
+	public String getName() {
+		return this.name;
+	}
 }
