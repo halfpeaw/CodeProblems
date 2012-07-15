@@ -16,8 +16,8 @@ public class FlowGUIClient {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub.
 		System.out.println("Main Project");
-		BuildGUI gui = new BuildGUI();
-		//new ClientConnection();
+		MainGUI gui = new MainGUI();
+		
 
 	}
 

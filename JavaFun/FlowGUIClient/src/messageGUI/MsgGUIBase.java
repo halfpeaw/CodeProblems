@@ -4,6 +4,10 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import messageObjects.MessageStruct;
+
+import flowGUIClient.MainGUI;
+
 
 /**
  * This class is the base for all the GUI Panels that will link with the
@@ -13,8 +17,13 @@ import javax.swing.*;
  *         Created Jul 13, 2012.
  */
 public abstract class MsgGUIBase extends JPanel {
-	public MsgGUIBase() {
+	private static final long serialVersionUID = 1L;
+	protected MainGUI mainGUI;
+	public MsgGUIBase(MainGUI mainGUI) {
 		this.setPreferredSize(new Dimension(300,620));
+		this.mainGUI = mainGUI;
+		GridBagLayout gridBagLayout = new GridBagLayout();
+		setLayout(gridBagLayout);
 	}
 	
 	public MsgGUIBase(byte[] byteIn) {
@@ -22,7 +31,7 @@ public abstract class MsgGUIBase extends JPanel {
 	}
 	/**
 	 * 
-	 * This method wille extract all the values in the fields of the GUI
+	 * This method will extract all the values in the fields of the GUI
 	 * use the appropriate MessageStruct to build a message and then return 
 	 * that byte array
 	 *
@@ -30,5 +39,7 @@ public abstract class MsgGUIBase extends JPanel {
 	 */
 	protected byte[] getMessageData() {
 		return new byte[0];
+	}
+	public void receiveResponse(MessageStruct response) {
 	}
 }

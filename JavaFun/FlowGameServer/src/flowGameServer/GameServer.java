@@ -8,6 +8,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
 
+import messageObjects.*;
+
 
 
 /**
@@ -32,7 +34,7 @@ public class GameServer {
                 //Wait for a client to connect
                 Socket socket = serverSocket.accept();
                 //Create a new custom thread to handle the connection
-                ClientThread cT = new ClientThread(socket);
+                ClientThread cT = new ClientThread(this,socket);
                  
                 //Start the thread!
                 new Thread(cT).start();
@@ -41,6 +43,12 @@ public class GameServer {
         } catch(IOException exception) {
             System.out.println("Error: " + exception);
         }
+	}
+	public void sendMessage(MessageStruct msg) {
+    	
+    }
+	public void receiveMessage(MessageStruct msg) {
+	
 	}
  
     /**
@@ -58,7 +66,10 @@ public class GameServer {
          *
          * @param socket
          */
-        public ClientThread(Socket socket)
+        OutputStream output = null;
+        GameServer server = null;
+        InputStream input = null;
+        public ClientThread(GameServer server, Socket socket)
         {
             //Here we set the socket to a local variable so we can use it later
             this.threadSocket = socket;
@@ -70,8 +81,8 @@ public class GameServer {
             try {
                 //Create the streams
             	Writer out;
-            	OutputStream output = this.threadSocket.getOutputStream();
-                InputStream input = this.threadSocket.getInputStream();
+            	output = this.threadSocket.getOutputStream();
+                input = this.threadSocket.getInputStream();
                  
                 //Tell the client that he/she has connected
                 byte [] bytesIn = new byte[100];
@@ -87,6 +98,19 @@ public class GameServer {
             } catch(IOException exception) {
                 System.out.println("Error: " + exception);
             }
+            
+        }
+        public boolean sendMessage(byte[] bytesOut) {
+        	try {
+				this.output.write(bytesOut);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return false;
+			}
+        	return true;
         }
     }
+    
+    
 }

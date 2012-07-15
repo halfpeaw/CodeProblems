@@ -53,14 +53,15 @@ public abstract class MessageStruct {
 	public final int getMsgUserId() {
 		return Globals.getValue(USER_OFFSET, USERID_LEN, this.messageArray);
 	}
-	public byte[] buildIntArray() {
-		return this.messageArray;
+	protected boolean buildIntArray(int msgId) {
+		setDefaultFields(msgId);
+		return true;
 	}
-	public void setDefaultFields(int msgID) {
+	public void setDefaultFields(int msgId) {
 		Globals.setValue(TYPE_OFFSET, TYPE_LEN, this.messageType, this.messageArray);
 		Globals.setValue(MSGLEN_OFFSET, MSGLEN_LEN, this.messageLen, this.messageArray);
 		Globals.setValue(USER_OFFSET, USERID_LEN, this.userID, this.messageArray);
-		Globals.setValue(this.messageLen-MSGID_OFFSET, MSGID_LEN, msgID, this.messageArray);
+		Globals.setValue(this.messageLen-MSGID_OFFSET, MSGID_LEN, msgId, this.messageArray);
 		//TODO write CRC Function
 		Globals.setValue(this.messageLen-CRC_OFFSET, CRC_LEN, this.messageCRC, this.messageArray);
 

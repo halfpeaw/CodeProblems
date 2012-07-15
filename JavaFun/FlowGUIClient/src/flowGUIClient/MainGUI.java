@@ -22,15 +22,22 @@ import messageGUI.*;
  * @author halfpeaw.
  *         Created Jul 10, 2012.
  */
-public class BuildGUI extends JFrame implements MouseListener, MouseMotionListener, ActionListener {
+public class MainGUI extends JFrame implements MouseListener, MouseMotionListener, ActionListener {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 2L;
 	private JPanel gameBoardPanel;
 	private boolean playerOneTurn = true;
 	private Dimension boardSize = new Dimension(640, 640);
-	private Dimension messageSize = new Dimension(300, 640);
 	private JMenuBar menuBar = new JMenuBar();
 	private JMenu menu = new JMenu("File");
-	private JPanel msgPanel = new JPanel();
-		
+	public ClientConnection clientSocket = new ClientConnection(this);
+	
+	/*
+	 * The following are all the different GUI Panels used for the application
+	 */
+	public MsgGUIBase connectPanel;
 	/**
 	 * TODO Put here a description of this field.
 	 */
@@ -39,9 +46,9 @@ public class BuildGUI extends JFrame implements MouseListener, MouseMotionListen
 	 * TODO This constructor is build the panel used for displaying out problems.
 	 *
 	 */
-	public BuildGUI() {
+	public MainGUI() { 
 		super("My Frame");
-		MsgGUIBase connectPanel = new ConnectMsgGUI();
+		connectPanel = new ConnectMsgGUI(this);
 		JPanel bigPanel = new JPanel();
 		//bigPanel.setLayout(new GridLayout(1,2));
 		bigPanel.setSize(new Dimension(640,740));
@@ -60,9 +67,6 @@ public class BuildGUI extends JFrame implements MouseListener, MouseMotionListen
 	  	this.gameBoardPanel = new JPanel();
 	  	this.layeredPane.add(this.gameBoardPanel, JLayeredPane.DEFAULT_LAYER);
 	  	bigPanel.add(this.layeredPane);
-	  	//this.msgPanel.setPreferredSize(this.messageSize);
-	  	//this.msgPanel.add(new JButton("Push me"));
-	  	bigPanel.add(new JButton("Send"));
 	  	bigPanel.add(connectPanel);
 	  	this.newBoard();
 	  	this.add(bigPanel);
@@ -190,6 +194,7 @@ public class BuildGUI extends JFrame implements MouseListener, MouseMotionListen
 	}
 	
 	private class ImagePanel extends JPanel {
+		private static final long serialVersionUID = 1L;
 		private BufferedImage image;
 		public int row = 0;
 		public int column = 0;

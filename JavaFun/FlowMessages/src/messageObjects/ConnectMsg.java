@@ -33,12 +33,12 @@ public class ConnectMsg extends MessageStruct {
 		this.name = Globals.readArrayString(NAME_OFFSET,this.nameLen,this.messageArray);
 	}
 	
-	@Override
-	public byte[] buildIntArray() {
+	public boolean buildIntArray(int msgId) {
 		this.nameLen = this.name.length();
 		Globals.setValue(NAME_LEN_OFFSET, NAME_LEN_SIZE, this.nameLen, this.messageArray);
 		Globals.fillArrayString(NAME_OFFSET, NAME_SIZE, this.name, this.messageArray);
-		return this.messageArray;
+		super.buildIntArray(msgId);
+		return true;
 	}
 
 	/**

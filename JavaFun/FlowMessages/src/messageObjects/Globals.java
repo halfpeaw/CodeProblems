@@ -7,7 +7,8 @@ package messageObjects;
  *         Created Jul 13, 2012.
  */
 public class Globals {
-	final static int CONNECT_TYPE = 0x0001;
+	public final static int CONNECT_TYPE = 0x0001;
+	public final static int CONNECT_RESP = 0x0002;
 
 	/**
 	 * 

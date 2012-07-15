@@ -21,7 +21,7 @@ public class ConnectResp extends MessageStruct  {
 		this.msgName = "ConnectResp";
 		this.userID = 532;
 		this.messageLen = MSG_LEN;
-		this.messageType = Globals.CONNECT_TYPE;
+		this.messageType = Globals.CONNECT_RESP;
 		this.messageArray = new byte[this.messageLen];
 	}
 	public ConnectResp(byte[]bytesIn) {
@@ -35,13 +35,14 @@ public class ConnectResp extends MessageStruct  {
 	}
 	
 	@Override
-	public byte[] buildIntArray() {
+	public boolean buildIntArray(int msgId) {
 		this.messageArray = new byte[MSG_LEN];
 		this.nameLen = this.name.length();
 		Globals.setValue(USER_ID_OFFSET, USER_ID_SIZE, this.userID, this.messageArray);
 		Globals.setValue(NAME_LEN_OFFSET, NAME_LEN_SIZE, this.nameLen, this.messageArray);
 		Globals.fillArrayString(NAME_OFFSET, NAME_SIZE, this.name, this.messageArray);
-		return this.messageArray;
+		super.buildIntArray(msgId);
+		return true;
 	}
 
 	/*
