@@ -11,14 +11,18 @@ public class ConnectMsg extends MessageStruct {
 	private final static int MSG_LEN = 24;
 	private final static int NAME_OFFSET = 8;
 	private final static int NAME_SIZE = 16;
+	private final static int TYPE_OFFSET = 24;
+	private final static int TYPE_LEN = 1;
 	private String name = "Name";
 	private String hostName ="localhost";
 	private int port = 1231;
+	private int playerType;
 
 	public ConnectMsg() {
 		this.msgName = "ConnectMsg";
 		this.messageLen = MSG_LEN;
 		this.messageType = Globals.CONNECT_TYPE;
+		this.playerType = Globals.IS_HUMAN;
 		this.messageArray = new byte[this.messageLen];
 	}
 	public ConnectMsg(byte[]bytesIn) {
@@ -30,6 +34,7 @@ public class ConnectMsg extends MessageStruct {
 	
 	public boolean buildIntArray(int msgId) {
 		Globals.fillArrayString(NAME_OFFSET, NAME_SIZE, this.name, this.messageArray);
+		Globals.setValue(TYPE_OFFSET, TYPE_LEN, this.playerType, this.messageArray);
 		super.buildIntArray(msgId);
 		return true;
 	}
@@ -61,5 +66,16 @@ public class ConnectMsg extends MessageStruct {
 	}
 	public String getName() {
 		return this.name;
+	}
+	public void setPlayerType(int type) {
+		if (type!= Globals.IS_AI && type!=Globals.IS_HUMAN) {
+			System.out.println("Value not valid: " + type);
+			this.playerType = Globals.IS_HUMAN;
+		} else {
+			this.playerType = type;
+		}
+	}
+	public int getPlayerType() {
+		return this.playerType;
 	}
 }

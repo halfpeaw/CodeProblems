@@ -3,15 +3,11 @@ package flowGameServer;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.Writer;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Random;
-import java.util.Set;
 
 import messageObjects.*;
 
@@ -98,7 +94,6 @@ public class GameServer {
             //All this should look familiar
             try {
                 //Create the streams
-            	Writer out;
             	output = this.threadSocket.getOutputStream();
                 input = this.threadSocket.getInputStream();
                  
@@ -119,12 +114,7 @@ public class GameServer {
                     	if (!server.hmap.containsKey(this.name)) {
                     		server.hmap.put(this.name, this);
                     	} else {
-                    		//Send a bad response
-                    		/*Set<String> keys = server.hmap.keySet();
-                    		Iterator<String> e =  keys.iterator(); 
-                    		while(e.hasNext()) {
-                    			System.out.println("! " + e.next());
-                    		}*/
+                    		//Send a disconnect response
                     		DisconnectMsg discMsg = new DisconnectMsg();
                     		discMsg.buildIntArray(0);
                     		output.write(discMsg.getBytes());

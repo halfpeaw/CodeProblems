@@ -37,25 +37,65 @@ public class MainGUI extends JFrame implements MouseListener, MouseMotionListene
 	/*
 	 * The following are all the different GUI Panels used for the application
 	 */
-	public MsgGUIBase connectPanel;
+	private JPanel msgPanel = new JPanel();
+	public MsgGUIBase connectPanel = new ConnectMsgGUI(this);
+	public MsgGUIBase createGamePanel = new CreateGameGUI(this);
+	
 	/**
 	 * TODO Put here a description of this field.
 	 */
 	JLayeredPane layeredPane;
+	private JMenuItem mntmNewMenuItem;
+	private JMenuItem mntmCreateGame;
+	private JMenuItem mntmNewMenuItem_1;
 	/**
 	 * TODO This constructor is build the panel used for displaying out problems.
 	 *
 	 */
 	public MainGUI() { 
-		super("My Frame");
-		connectPanel = new ConnectMsgGUI(this);
+		super("Flow GUI Client");
+		msgPanel.setPreferredSize(new Dimension(300,620));
 		JPanel bigPanel = new JPanel();
 		//bigPanel.setLayout(new GridLayout(1,2));
 		bigPanel.setSize(new Dimension(640,740));
 		this.menuBar.add(this.menu);
+		
+		mntmNewMenuItem = new JMenuItem("Connect");
+		mntmNewMenuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				msgPanel.removeAll();
+				msgPanel.add(connectPanel);
+				validate();
+				repaint();
+			}
+		});
+		menu.add(mntmNewMenuItem);
+		
+		mntmCreateGame = new JMenuItem("Create Game");
+		mntmCreateGame.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				msgPanel.removeAll();
+				msgPanel.add(createGamePanel);
+				validate();
+				repaint();
+				((CreateGameGUI)createGamePanel).populateList();
+			}
+		});
+		menu.add(mntmCreateGame);
 		JMenuItem menuItem = new JMenuItem("Reset");
-		menuItem.addActionListener(this);
+		menuItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				newBoard();
+			}
+		});
 		this.menu.add(menuItem);
+		
+		mntmNewMenuItem_1 = new JMenuItem("Disconnect");
+		mntmNewMenuItem_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		menu.add(mntmNewMenuItem_1);
 		this.setJMenuBar(this.menuBar);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.layeredPane = new JLayeredPane();
@@ -67,9 +107,10 @@ public class MainGUI extends JFrame implements MouseListener, MouseMotionListene
 	  	this.gameBoardPanel = new JPanel();
 	  	this.layeredPane.add(this.gameBoardPanel, JLayeredPane.DEFAULT_LAYER);
 	  	bigPanel.add(this.layeredPane);
-	  	bigPanel.add(connectPanel);
+	  	bigPanel.add(msgPanel);
+	  	msgPanel.add(connectPanel);
 	  	this.newBoard();
-	  	this.add(bigPanel);
+	  	getContentPane().add(bigPanel);
 	  	this.pack();
 		this.setResizable(true);
 		this.setLocationRelativeTo( null );
@@ -218,11 +259,9 @@ public class MainGUI extends JFrame implements MouseListener, MouseMotionListene
 	    }
 	}
 
-	/**
-	 * Tied to the menu need to make this generic
-	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		this.newBoard();	
+		// TODO Auto-generated method stub
+		
 	}
 }

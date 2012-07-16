@@ -8,8 +8,8 @@ package messageObjects;
  *
  */
 public class GetPlayersMsg extends MessageStruct {
-	private final static int MSG_LEN = 16;
-	private int type;
+	private final static int MSG_LEN = 12;
+	private int playerType;
 	private int TYPE_OFFSET = 11;
 	private int TYPE_LEN = 1;
 	public GetPlayersMsg() {
@@ -21,23 +21,23 @@ public class GetPlayersMsg extends MessageStruct {
 	public GetPlayersMsg(byte[] bytesIn) {
 		super(bytesIn);
 		this.msgName = "GetPlayersMsg";
-		this.type = Globals.getValue(TYPE_OFFSET, TYPE_LEN, this.messageArray);
+		this.playerType = Globals.getValue(TYPE_OFFSET, TYPE_LEN, this.messageArray);
 	}
 	public boolean buildIntArray(int msgId) {
-		Globals.setValue(TYPE_OFFSET, TYPE_LEN, this.type, this.messageArray);
+		Globals.setValue(TYPE_OFFSET, TYPE_LEN, this.playerType, this.messageArray);
 		super.buildIntArray(msgId);
 		return true;
 	}
 	public void setType(int type) {
 		if (type != Globals.IS_AI && type != Globals.IS_HUMAN) {
 			System.out.println("Inappropriate type set, setting to human");
-			this.type = Globals.IS_HUMAN;
+			this.playerType = Globals.IS_HUMAN;
 			return;
 		}
-		this.type = type;
+		this.playerType = type;
 	}
-	public int getType(int type) {
-		return this.type;
+	public int getType() {
+		return this.playerType;
 	}
 	
 }

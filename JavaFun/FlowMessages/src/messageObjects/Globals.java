@@ -11,6 +11,7 @@ public class Globals {
 	public final static int CONNECT_RESP = 0x0002;
 	public final static int DISCONNECT = 0x0003;
 	public final static int GET_PLAYERS_MSG = 0x0004;
+	public final static int GET_PLAYERS_RESP = 0x0005;
 
 	//Status Code
 	public final static int COMMAND_MSG = 0x0000;

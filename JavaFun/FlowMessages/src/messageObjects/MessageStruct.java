@@ -47,7 +47,8 @@ public abstract class MessageStruct {
 		this.messageLen = this.getMsgLen();
 		this.messageType = this.getMsgType();
 		if (this.messageArray.length < this.messageLen) {
-			System.out.println("Something is wrong with the message lenght: " + this.messageLen + " For: " +this.messageType);
+			System.out.println("Something is wrong with the message lenght: " + this.messageLen + " For: " +this.messageType +
+					" Array Size: " + this.messageArray.length);
 		}
 		this.status = Globals.getValue(STATUS_OFFSET, STATUS_LEN, this.messageArray);
 		this.messageID = Globals.getValue(this.messageLen-MSGID_OFFSET, MSGID_LEN, this.messageArray);

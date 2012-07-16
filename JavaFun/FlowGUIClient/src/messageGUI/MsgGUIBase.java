@@ -19,7 +19,7 @@ import flowGUIClient.MainGUI;
 public abstract class MsgGUIBase extends JPanel {
 	private static final long serialVersionUID = 1L;
 	protected MainGUI mainGUI;
-	public MsgGUIBase(MainGUI mainGUI) {
+	public MsgGUIBase(final MainGUI mainGUI) {
 		this.setPreferredSize(new Dimension(300,620));
 		this.mainGUI = mainGUI;
 		GridBagLayout gridBagLayout = new GridBagLayout();

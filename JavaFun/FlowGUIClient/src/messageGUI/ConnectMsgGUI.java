@@ -5,7 +5,6 @@ import javax.swing.*;
 import flowGUIClient.MainGUI;
 
 import messageObjects.ConnectMsg;
-import messageObjects.ConnectResp;
 import messageObjects.Globals;
 import messageObjects.MessageStruct;
 
@@ -146,9 +145,9 @@ public class ConnectMsgGUI extends MsgGUIBase {
 	public void receiveResponse(MessageStruct response) {
 		if (response.getMsgType() == Globals.CONNECT_RESP) {
 			statusTextField.setText(""+(response.getStatus()));
-			this.mainGUI.gameInfo.userId = response.getStatus();
 		} else {
 			System.out.println("Something went wrong...");
+			statusTextField.setText("Unexpected Message: " + response.toString());
 		}
 		
 	}
