@@ -8,7 +8,7 @@ package messageObjects;
  *         Created Jul 13, 2012.
  */
 public class ConnectMsg extends MessageStruct {
-	private final static int MSG_LEN = 24;
+	private final static int MSG_LEN = 28;
 	private final static int NAME_OFFSET = 8;
 	private final static int NAME_SIZE = 16;
 	private final static int TYPE_OFFSET = 24;
