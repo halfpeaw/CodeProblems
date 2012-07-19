@@ -30,7 +30,9 @@ public abstract class MessageStruct {
 	final static int STATUS_OFFSET = 6;
 	final static int STATUS_LEN = 2;
 	
-			
+	//Misc Constants
+	protected final static int PLAYER_NAME_SIZE = 16;
+	protected final static int GAME_NAME_SIZE = 32;
 	/**
 	 * TODO Put here a description of what this constructor does.
 	 *
@@ -74,6 +76,7 @@ public abstract class MessageStruct {
 		return Globals.getValue(STATUS_OFFSET, STATUS_LEN, this.messageArray);
 	}
 	public boolean buildIntArray(int msgId) {
+		this.messageLen = this.messageArray.length;
 		setDefaultFields(msgId);
 		return true;
 	}

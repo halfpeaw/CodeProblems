@@ -12,7 +12,6 @@ public class DisconnectMsg extends MessageStruct {
 	public DisconnectMsg() {
 		this.msgName = "Disconnect";
 		this.messageType = Globals.DISCONNECT;
-		this.messageLen = MSG_LEN;
 		
 	}
 	public DisconnectMsg(byte[] bytesIn) {

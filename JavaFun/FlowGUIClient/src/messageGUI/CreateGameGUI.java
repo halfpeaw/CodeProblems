@@ -7,6 +7,7 @@ import java.awt.*;
 
 import javax.swing.*;
 
+import messageObjects.CreateGameMsg;
 import messageObjects.GetPlayersMsg;
 import messageObjects.GetPlayersResp;
 import messageObjects.Globals;
@@ -25,8 +26,8 @@ import java.awt.event.ItemEvent;
 public class CreateGameGUI extends MsgGUIBase {
 
 	private static final long serialVersionUID = 3L;
-	private JTextField textField;
-	private JTextField txtTestGame;
+	private JTextField playerCountTextField;
+	private JTextField gameNameTextField;
 	private JTextField gameStatusTextField;
 	private String[] playerNames;
 	DefaultListModel model = new DefaultListModel();
@@ -57,15 +58,15 @@ public class CreateGameGUI extends MsgGUIBase {
 		gbc_lblGameName.gridy = 2;
 		add(lblGameName, gbc_lblGameName);
 		
-		txtTestGame = new JTextField();
-		txtTestGame.setText("Test Game");
+		gameNameTextField = new JTextField();
+		gameNameTextField.setText("Test Game");
 		GridBagConstraints gbc_txtTestGame = new GridBagConstraints();
 		gbc_txtTestGame.fill = GridBagConstraints.HORIZONTAL;
 		gbc_txtTestGame.insets = new Insets(0, 0, 5, 0);
 		gbc_txtTestGame.gridx = 1;
 		gbc_txtTestGame.gridy = 2;
-		add(txtTestGame, gbc_txtTestGame);
-		txtTestGame.setColumns(10);
+		add(gameNameTextField, gbc_txtTestGame);
+		gameNameTextField.setColumns(10);
 		
 		JLabel lblNewLabel = new JLabel("#Players: ");
 		GridBagConstraints gbc_lblNewLabel = new GridBagConstraints();
@@ -75,16 +76,16 @@ public class CreateGameGUI extends MsgGUIBase {
 		gbc_lblNewLabel.gridy = 3;
 		add(lblNewLabel, gbc_lblNewLabel);
 		
-		textField = new JTextField();
-		textField.setEditable(false);
-		textField.setText("2");
+		playerCountTextField = new JTextField();
+		playerCountTextField.setEditable(false);
+		playerCountTextField.setText("2");
 		GridBagConstraints gbc_textField = new GridBagConstraints();
 		gbc_textField.fill = GridBagConstraints.HORIZONTAL;
 		gbc_textField.insets = new Insets(0, 0, 5, 0);
 		gbc_textField.gridx = 1;
 		gbc_textField.gridy = 3;
-		add(textField, gbc_textField);
-		textField.setColumns(10);
+		add(playerCountTextField, gbc_textField);
+		playerCountTextField.setColumns(10);
 		
 		JLabel lblSelectPlayers = new JLabel("Select Players");
 		GridBagConstraints gbc_lblSelectPlayers = new GridBagConstraints();
@@ -121,6 +122,16 @@ public class CreateGameGUI extends MsgGUIBase {
 		JButton btnCreateGame = new JButton("Create Game");
 		btnCreateGame.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				CreateGameMsg msg = new CreateGameMsg();
+				msg.setGameBoardSize(8);
+				msg.setGameName(gameNameTextField.getText());
+				int[] index = playerlist.getSelectedIndices();
+				String[] players = new String[index.length];
+				for (int i = 0; i < index.length; i ++ ) {
+					players[i] = (String)model.getElementAt(index[i]);
+				}
+				msg.setPlayerList(players);
+				mainGUI.clientSocket.sendMessage(msg);
 			}
 		});
 		GridBagConstraints gbc_btnCreateGame = new GridBagConstraints();

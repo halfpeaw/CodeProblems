@@ -12,6 +12,8 @@ public class Globals {
 	public final static int DISCONNECT = 0x0003;
 	public final static int GET_PLAYERS_MSG = 0x0004;
 	public final static int GET_PLAYERS_RESP = 0x0005;
+	public final static int CREATE_GAME_MSG = 0x0006;
+	public final static int CREATE_GAME_RESP = 0x0007;
 
 	//Status Code
 	public final static int COMMAND_MSG = 0x0000;
@@ -21,8 +23,10 @@ public class Globals {
 	public final static int SUCCESS = 0x0003;
 	
 	
+	//Other common constants
 	public final static int IS_HUMAN = 0x00;
 	public final static int IS_AI = 0xFF;
+
 	/**
 	 * 
 	 * Sets the value of val in to byteIn

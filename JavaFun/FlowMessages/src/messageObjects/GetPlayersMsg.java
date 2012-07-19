@@ -8,14 +8,13 @@ package messageObjects;
  *
  */
 public class GetPlayersMsg extends MessageStruct {
-	private final static int MSG_LEN = 12;
+	private final static int MSG_LEN = 16;
 	private int playerType;
 	private int TYPE_OFFSET = 11;
 	private int TYPE_LEN = 1;
 	public GetPlayersMsg() {
 		this.msgName = "GetPlayersMsg";
 		this.messageType = Globals.GET_PLAYERS_MSG;
-		this.messageLen = MSG_LEN;
 		
 	}
 	public GetPlayersMsg(byte[] bytesIn) {
@@ -24,6 +23,7 @@ public class GetPlayersMsg extends MessageStruct {
 		this.playerType = Globals.getValue(TYPE_OFFSET, TYPE_LEN, this.messageArray);
 	}
 	public boolean buildIntArray(int msgId) {
+		this.messageArray = new byte[MSG_LEN];
 		Globals.setValue(TYPE_OFFSET, TYPE_LEN, this.playerType, this.messageArray);
 		super.buildIntArray(msgId);
 		return true;

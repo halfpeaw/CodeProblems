@@ -15,10 +15,12 @@ import messageObjects.Globals;
 public class UserObject {
 	public String name = "Empty";
 	public int playerType = Globals.IS_HUMAN;
+	public boolean isConnected = false;
 	private HashMap<Integer, String> gameList = new HashMap<Integer, String>();
 	public UserObject(String name, int playerType) {
 		this.playerType = playerType;
 		this.name = name;
+		this.isConnected = true;
 	}
 	public String retrieveGame(int gameId) {
 		return gameList.get(gameId);

@@ -14,9 +14,7 @@ public class ConnectResp extends MessageStruct  {
 
 	public ConnectResp() {
 		this.msgName = "ConnectResp";
-		this.messageLen = MSG_LEN;
 		this.messageType = Globals.CONNECT_RESP;
-		this.messageArray = new byte[this.messageLen];
 	}
 	public ConnectResp(byte[]bytesIn) {
 		super(bytesIn);

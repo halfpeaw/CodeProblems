@@ -24,10 +24,17 @@ public class MessageHandler {
 		case Globals.GET_PLAYERS_MSG:
 			handleGetPlayers(new GetPlayersMsg(bytesIn), username);
 			break;
+		case Globals.CREATE_GAME_MSG:
+			handleCreateGame(new CreateGameMsg(bytesIn), username);
+			break;
 		default:
+			System.out.println("Message Type: " + Globals.getMsgUserIDFromArray(bytesIn) + " Not Recognized");
 			break;
 				
 		}
+	}
+	private void handleCreateGame(CreateGameMsg msg, String username) {
+		System.out.println("Create Game");
 	}
 	
 	private void handleConnect(ConnectMsg msg, String username) {

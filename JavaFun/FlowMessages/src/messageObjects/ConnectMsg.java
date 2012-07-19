@@ -10,7 +10,7 @@ package messageObjects;
 public class ConnectMsg extends MessageStruct {
 	private final static int MSG_LEN = 28;
 	private final static int NAME_OFFSET = 8;
-	private final static int NAME_SIZE = 16;
+	//Name Size declared in Globals
 	private final static int TYPE_OFFSET = 24;
 	private final static int TYPE_LEN = 1;
 	private String name = "Name";
@@ -20,20 +20,19 @@ public class ConnectMsg extends MessageStruct {
 
 	public ConnectMsg() {
 		this.msgName = "ConnectMsg";
-		this.messageLen = MSG_LEN;
 		this.messageType = Globals.CONNECT_TYPE;
 		this.playerType = Globals.IS_HUMAN;
-		this.messageArray = new byte[this.messageLen];
 	}
 	public ConnectMsg(byte[]bytesIn) {
 		super(bytesIn);
 		this.msgName = "ConnectMsg";
 		this.messageType = Globals.CONNECT_TYPE;
-		this.name = Globals.readArrayString(NAME_OFFSET, NAME_SIZE, this.messageArray);
+		this.name = Globals.readArrayString(NAME_OFFSET, PLAYER_NAME_SIZE, this.messageArray);
 	}
 	
 	public boolean buildIntArray(int msgId) {
-		Globals.fillArrayString(NAME_OFFSET, NAME_SIZE, this.name, this.messageArray);
+		this.messageArray = new byte[MSG_LEN];
+		Globals.fillArrayString(NAME_OFFSET, PLAYER_NAME_SIZE, this.name, this.messageArray);
 		Globals.setValue(TYPE_OFFSET, TYPE_LEN, this.playerType, this.messageArray);
 		super.buildIntArray(msgId);
 		return true;
@@ -58,8 +57,8 @@ public class ConnectMsg extends MessageStruct {
 		this.hostName = hostName;
 	}
 	public void setName(String name) {
-		if (name.length() > NAME_SIZE) {
-			System.out.println("Name has a " + NAME_SIZE + " char max");
+		if (name.length() > PLAYER_NAME_SIZE) {
+			System.out.println("Name has a " + PLAYER_NAME_SIZE + " char max");
 		}
 		this.name = name;
 		
