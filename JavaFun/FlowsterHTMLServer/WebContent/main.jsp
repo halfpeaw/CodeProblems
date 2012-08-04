@@ -22,7 +22,7 @@ if (message != null) {
 	User Name&nbsp;<input type="text" size=30 name="userName"><br>
 	Password&nbsp;<input type="text" size=20 name="password"><br>
   <INPUT type="submit" value="Login">
-  <A Href="./newUser.jsp">Create Login</A>
+  <A Href="./NewUser.jsp">Create Login</A>
 </form>
 <% } else { %>
 <br> You are already logged in

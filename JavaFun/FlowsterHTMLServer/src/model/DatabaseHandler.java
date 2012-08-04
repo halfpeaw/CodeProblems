@@ -1,5 +1,6 @@
 package model;
 
+import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
@@ -37,6 +38,8 @@ public class DatabaseHandler {
 		String token = "FFFFFFFFAB";
 		String status = ""+Globals.UNKNOWN_FAILURE;
 		String message = "No Message";
+		userName = userName.trim();
+		password = password.trim();
 		HashMap<String, String> result = new HashMap<String, String>();
 		
 		if (!isValid(userName) || !isValid(password)) {
@@ -46,25 +49,29 @@ public class DatabaseHandler {
 			return result;
 		}
 		try {
-			PreparedStatement statement = con.prepareStatement("SELECT u.`Password` FROM flowsterdb.users u where UserName = '"+ userName+"'");
+			PreparedStatement statement = con.prepareStatement("SELECT Password, Salt FROM flowsterdb.users u where UserName = '"+ userName+"'");
 			ResultSet resultSQL = statement.executeQuery();
 			if (resultSQL.first() ) {
+				password = hashFunction(password+resultSQL.getInt("Salt"));
 				if (resultSQL.getString("Password").equals(password)) {
 					status = ""+Globals.SUCCESS;
 					token = hashFunction(userName + randGenerator.nextInt(10000));
+					message = "User Logged in: " + token;
 					activeUsers.put(userName, new UserInfo(token));
 				} else {
 					status = ""+Globals.BAD_PASSWORD;
+					message = "Incorrect Password";
 				}
 			} else {
 				status = "" +Globals.BAD_USERNAME;
+				message = "User Name not found";
 			}
 		
 		} catch (SQLException e) {
 			status = "" + Globals.UNKNOWN_FAILURE;
+			message = e.getMessage();
 			e.printStackTrace();
 		}
-		message = Globals.getMessage(status);
 		result.put("token", token);
 		result.put("status", status);
 		result.put("message", message);
@@ -82,41 +89,67 @@ public class DatabaseHandler {
 	 * @param lName
 	 * @return
 	 */
-	public int updateUser(String userName, String password, 
+	public String addUser(String userName, String password, 
 			String email, String fName, String lName) {
-		int status = Globals.BAD_FIELDS;
+		int salt = randGenerator.nextInt(10000);
+		userName = userName.trim();
+		password = password.trim();
+		email = email.trim();
+		fName = fName.trim();
+		lName = lName.trim();
+		password = hashFunction(password+salt);
 		final String userQuery = "SELECT UserName FROM flowsterdb.users u " +
 				"WHERE u.`UserName`='"+userName+"'";
 		final String insertQuery = "INSERT INTO flowsterdb.users" +
-				"(UserName, Password, FirstName, LastName, Email) " +
+				"(UserName, Password, FirstName, LastName, Email, Salt) " +
 				"	VALUES('"+userName+"', '"+password+"', '"
-				+fName+"', '"+lName+"', '"+email+"')";
-		password = hashFunction(password);
+				+fName+"', '"+lName+"', '"+email+"', "+salt+")";
 		PreparedStatement statement;
 		ResultSet resultSQL;
-		if (!isValid(userName) || !isValid(password) || !isValid(email) 
-				|| isValid(fName) || isValid(lName)) {
-			return Globals.BAD_FIELDS;
+		if (!isValid(password)) {
+			return "bad passwd: " + password;
+		}
+		if (!isValid(email)) {
+			return "Bad email: " + email;
+		}
+		if (!isValid(userName)) {
+			return "Bad UserName: " + userName;
+		}
+		if (!isValid(fName)) {
+			return "Bad First Name: " + fName;
+		}
+		if (!isValid(lName)) {
+			return "Bad LName: " + lName;
+		}
+		
+		if (!(isValid(userName) && isValid(password) && isValid(email) 
+				&& isValid(fName) && isValid(lName))) {
+			return ""+Globals.BAD_FIELDS;
 		}
 		
 		try {
 			statement = con.prepareStatement(userQuery);
 			resultSQL = statement.executeQuery();
 			if (resultSQL.first() ) {
-				return Globals.USERNAME_IN_USE;
+				return ""+Globals.USERNAME_IN_USE;
 			}
 			statement = con.prepareStatement(insertQuery);
-			resultSQL = statement.executeQuery();
-			status = Globals.SUCCESS;
+			int updateResult = statement.executeUpdate();
+			if (updateResult > 0) {
+				return ""+Globals.SUCCESS;
+			} else {
+				return ""+Globals.NO_RESULT_SQL; 	
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return Globals.UNKNOWN_FAILURE;
+			return e.getMessage();
+			//return ""+Globals.UNKNOWN_FAILURE;
 		}
-		return status;
+		//return ""+status;
 	}
 	final static boolean isValid(String value) {
-		return Pattern.matches("[a-zA-Z0-9.-_@+?]+", value);
+		return Pattern.matches("[a-zA-Z0-9.-_@+? ]+", value);
 	}
 	
 	final static String hashFunction(String encryptString) {
@@ -125,7 +158,8 @@ public class DatabaseHandler {
 		try {
 			messageDigest = MessageDigest.getInstance("SHA-256");
 			messageDigest.update(encryptString.getBytes());
-			encryptedString = new String(messageDigest.digest());
+			BigInteger bigInt = new BigInteger(messageDigest.digest()).abs();
+			encryptedString = bigInt.toString(16); // 16 is the radix
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

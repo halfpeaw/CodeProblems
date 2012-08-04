@@ -9,6 +9,7 @@ public class Globals {
 	public final static int BAD_PASSWORD = 0x0004;
 	public final static int BAD_USERNAME = 0x0005;
 	public final static int BAD_FIELDS = 0x0006;
+	public final static int NO_RESULT_SQL = 0x0007;
 	
 	
 	

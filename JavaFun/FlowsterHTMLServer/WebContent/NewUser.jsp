@@ -4,10 +4,20 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>New User Page</title>
 </head>
 <body>
-<form method = "POST" action = "UpdateUser.do" name = "updateUser" id="updateUser" >
+
+<%
+String message = (String)request.getAttribute("message");
+if (message != null) {
+	out.print(message + "<br>");
+} else {
+	out.print("No Status<br>");
+}
+
+%>
+<form method = "POST" action = "NewUser.do" name = "updateUser" id="updateUser" >
 	Enter Login<br>
 	User Name&nbsp;<input type="text" size=30 name="userName" id="userName" ><br>
 	Password&nbsp;<input type="text" size=20 name="password" id="password"><br>
