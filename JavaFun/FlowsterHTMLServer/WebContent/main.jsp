@@ -7,16 +7,24 @@
 <title>Main Page</title>
 </head>
 <body>
+
 <%
+boolean loggedIn = false;
 String message = (String)request.getAttribute("message");
 if (message != null) {
 	out.print(message + "<br>");
+} 
+if (session.isNew() ) {
+	out.print("No Session Available");
+} else if ((String)session.getAttribute("userName") == null) {
+	
+	out.print("Not logged in");
 } else {
-	out.print("No Status<br>");
+	out.print("Welcome: " + (String)session.getAttribute("userName"));
+	loggedIn = true;
 }
-
 %>
-<% if (true) {%>
+<% if (!loggedIn) {%>
 <form method = "POST" action = "UserAdmin.do">
 	Enter Login<br>
 	User Name&nbsp;<input type="text" size=30 name="userName"><br>
@@ -24,9 +32,8 @@ if (message != null) {
   <INPUT type="submit" value="Login">
   <A Href="./NewUser.jsp">Create Login</A>
 </form>
-<% } else { %>
-<br> You are already logged in
 <% } %>
-
+<br>
+<A Href="./UserAdmin.do">Log Off</A>
 </body>
 </html>

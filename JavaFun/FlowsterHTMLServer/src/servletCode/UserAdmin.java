@@ -1,7 +1,6 @@
 package servletCode;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -19,6 +18,10 @@ import model.Globals;
 
 @WebServlet("/UserAdmin.do")
 public class UserAdmin extends HttpServlet {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8079262787703412186L;
 	DatabaseHandler db;
 	public void init() throws ServletException {
 		db = (DatabaseHandler)this.getServletContext().getAttribute("db");
@@ -39,14 +42,28 @@ public class UserAdmin extends HttpServlet {
 			
 			HashMap<String, String> map = db.userLogin(userName, password);
 			String token = map.get("token");
-			HttpSession session = request.getSession();
-			session.setAttribute("token", token );
-			session.setAttribute("userName", userName);
-			request.setAttribute("message",map.get("message"));
-		    RequestDispatcher view = request.getRequestDispatcher("main.jsp");
-		    view.forward(request, response);
+			String status = map.get("status");
+			if (!status.equals(""+Globals.SUCCESS)) {
+				request.setAttribute("message",map.get("message"));
+				RequestDispatcher view = request.getRequestDispatcher("main.jsp");
+			    view.forward(request, response);
+			} else {
+				HttpSession session = request.getSession();
+				session.setAttribute("token", token );
+				session.setAttribute("userName", userName);
+				response.sendRedirect("main.jsp");
+			}
 		}
 		
+	}
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
+		HttpSession session = request.getSession();
+		String token = (String) session.getAttribute("token");
+		String userName = (String) session.getAttribute("userName");
+		session.invalidate();
+		int status =  db.userLogOff(userName, token);
+		request.setAttribute("message",Globals.getMessage(status));
+		response.sendRedirect("main.jsp");
 	}
 	final static boolean isValid(String value) {
 		return Pattern.matches("[a-zA-Z0-9]+", value);

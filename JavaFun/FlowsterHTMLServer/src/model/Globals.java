@@ -9,7 +9,10 @@ public class Globals {
 	public final static int BAD_PASSWORD = 0x0004;
 	public final static int BAD_USERNAME = 0x0005;
 	public final static int BAD_FIELDS = 0x0006;
-	public final static int NO_RESULT_SQL = 0x0007;
+	public final static int BAD_TOKEN = 0x0007;
+	public final static int NO_RESULT_SQL = 0x0008;
+	public final static int TOKEN_EXPIRED = 0x0009;
+	
 	
 	
 	
@@ -40,6 +43,12 @@ public class Globals {
 			break;
 		case BAD_FIELDS:
 			message = "Bad field provided";
+			break;
+		case BAD_TOKEN:
+			message = "Bad Token provided";
+			break;
+		case TOKEN_EXPIRED:
+			message = "Token has expired";
 			break;
 		default:
 			message = "Status code not found: " + messageType;

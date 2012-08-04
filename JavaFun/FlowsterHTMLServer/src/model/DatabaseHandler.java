@@ -4,7 +4,8 @@ import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.*;
-import java.util.Date;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Random;
 import java.util.regex.Pattern;
@@ -148,11 +149,44 @@ public class DatabaseHandler {
 		}
 		//return ""+status;
 	}
-	final static boolean isValid(String value) {
+	
+	/**
+	 * This function will remove a user from the activeUsers hash table
+	 * @param userName
+	 * @param token
+	 * @return
+	 */
+	public int userLogOff(String userName, String token) {
+		int validation = validateUser(userName, token);
+		if (validation == Globals.SUCCESS) {
+			activeUsers.remove(userName);
+			return Globals.SUCCESS;
+		} else {
+			return validation;
+		}
+			
+	}
+	public int validateUser(String userName, String token) {
+		if (activeUsers.get(userName) == null) {
+			return Globals.BAD_USERNAME;
+		}
+		if (!activeUsers.get(userName).expiry.after(new GregorianCalendar())) {
+			activeUsers.remove(userName);
+			return Globals.TOKEN_EXPIRED;
+		
+		}
+		if (!activeUsers.get(userName).token.equals(token)) {
+			return Globals.BAD_TOKEN;
+		
+		}
+		return Globals.SUCCESS;
+	}
+
+	private final static boolean isValid(String value) {
 		return Pattern.matches("[a-zA-Z0-9.-_@+? ]+", value);
 	}
 	
-	final static String hashFunction(String encryptString) {
+	private final static String hashFunction(String encryptString) {
 		MessageDigest messageDigest;
 		String encryptedString = "1234567890";
 		try {
@@ -174,9 +208,12 @@ public class DatabaseHandler {
 	 */
 	private class UserInfo {
 		public String token = "EMPTY";
-		public Date expiry = null;
+		public Calendar expiry = null;
 		public UserInfo(String token) {
 			this.token = token;
+			expiry = new GregorianCalendar();
+			expiry.add(Calendar.HOUR, 1);
+			
 		}
 	}
 		
