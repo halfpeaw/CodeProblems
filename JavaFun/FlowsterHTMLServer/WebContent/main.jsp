@@ -32,8 +32,12 @@ if (session.isNew() ) {
   <INPUT type="submit" value="Login">
   <A Href="./NewUser.jsp">Create Login</A>
 </form>
-<% } %>
+<% } else { %>
 <br>
-<A Href="./UserAdmin.do">Log Off</A>
+<A Href="./EditProfile.do">Edit Profile</A><br>
+<A Href="./UpdatePassword.jsp">Update Password</A><br>
+<A Href="./UserAdmin.do">Log Off</A><br>
+
+<% } %>
 </body>
 </html>

@@ -166,6 +166,112 @@ public class DatabaseHandler {
 		}
 			
 	}
+	
+	public HashMap<String,String> getUserInformation(String userName, String token) {
+		HashMap<String,String> resultMap = new HashMap<String,String>();
+		int status = validateUser(userName, token);
+		// TODO remove debug code
+		status = Globals.SUCCESS;
+		if (status != Globals.SUCCESS) {
+			resultMap.put("status", ""+status);
+			resultMap.put("message", Globals.getMessage(status));
+			return resultMap;
+		}
+		String queryString = "SELECT UserName, FirstName, LastName, Email FROM flowsterdb.users " +
+				"WHERE UserName = '" + userName + "'";
+		PreparedStatement statement;
+		try {
+			statement = con.prepareStatement(queryString);
+			ResultSet resultSQL = statement.executeQuery();
+			if (resultSQL.first() ) {
+				resultMap.put("status", ""+Globals.SUCCESS);
+				resultMap.put("message", "Received user info on: " + userName);
+				resultMap.put("UserName", resultSQL.getString("UserName"));
+				resultMap.put("FirstName", resultSQL.getString("FirstName"));
+				resultMap.put("LastName", resultSQL.getString("LastName"));
+				resultMap.put("Email", resultSQL.getString("Email"));
+			} else {
+				resultMap.put("status", ""+Globals.BAD_USERNAME);
+				resultMap.put("message", Globals.getMessage(Globals.BAD_USERNAME) +":" + userName);
+			}
+		} catch (SQLException e) {
+			resultMap.put("status", ""+Globals.UNKNOWN_FAILURE);
+			resultMap.put("message", e.getMessage());
+			e.printStackTrace();
+		}
+		
+		return resultMap;
+	}
+
+	public int updateUserInfo(String userName, String token, String FirstName, String LastName, String Email) {
+		int status = validateUser(userName, token);
+		// TODO remove debug code
+		status = Globals.SUCCESS;
+		if (status != Globals.SUCCESS) {
+			return status;
+		}
+		if (!(isValid(FirstName) && isValid(LastName) && isValid(Email))) {
+			return Globals.BAD_FIELDS;
+		}
+		try {
+			PreparedStatement statement;
+			statement = con.prepareStatement
+					("UPDATE flowsterdb.users SET Email='"+Email+"', FirstName='"+FirstName+"', " +
+							"LastName='"+LastName+"' WHERE UserName = '"+ userName+"'");
+			int updateResult = statement.executeUpdate();
+			if (updateResult < 1) {
+				status = Globals.NO_RESULT_SQL;
+			}
+			return Globals.SUCCESS;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return Globals.UNKNOWN_FAILURE;
+		}
+		//return ""+status;
+	}
+	
+	
+	/**
+	 * This function will update the password in the database
+	 * @param userName
+	 * @param token
+	 * @param oldPassword
+	 * @param newPassword
+	 * @return Global Status
+	 */
+	public int updatePassword(String userName, String token, String oldPassword, String newPassword) {
+		int status = validateUser(userName, token);
+		// TODO remove debug code
+		status = Globals.SUCCESS;
+		if (status != Globals.SUCCESS) {
+			return status;
+		}
+		try {
+			PreparedStatement statement;
+			statement = con.prepareStatement("SELECT Password, Salt FROM flowsterdb.users u where UserName = '"+ userName+"'");
+			ResultSet resultSQL = statement.executeQuery();
+			if (resultSQL.first() ) {
+				oldPassword = hashFunction(oldPassword+resultSQL.getInt("Salt"));
+				newPassword = hashFunction(newPassword+resultSQL.getInt("Salt"));
+				if (resultSQL.getString("Password").equals(oldPassword)) {
+					statement = con.prepareStatement("UPDATE flowsterdb.users SET Password='"+newPassword+"' WHERE UserName = '"+ userName+"'");
+					int updateResult = statement.executeUpdate();
+					if (updateResult < 1) {
+						status = Globals.NO_RESULT_SQL;
+					}
+				} else {
+					status = Globals.BAD_PASSWORD;
+				}
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			status = Globals.UNKNOWN_FAILURE;
+		}
+		return status;
+	}
+
 	public int validateUser(String userName, String token) {
 		if (activeUsers.get(userName) == null) {
 			return Globals.BAD_USERNAME;

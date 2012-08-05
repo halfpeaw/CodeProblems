@@ -25,6 +25,7 @@ public class UserAdmin extends HttpServlet {
 	DatabaseHandler db;
 	public void init() throws ServletException {
 		db = (DatabaseHandler)this.getServletContext().getAttribute("db");
+		db.userLogin("halfpeaw", "password");
 	}
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		response.setContentType("text/html");
@@ -56,6 +57,9 @@ public class UserAdmin extends HttpServlet {
 		}
 		
 	}
+	/**
+	 * Handles the log off
+	 */
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		HttpSession session = request.getSession();
 		String token = (String) session.getAttribute("token");

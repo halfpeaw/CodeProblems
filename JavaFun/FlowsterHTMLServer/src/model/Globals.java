@@ -1,5 +1,11 @@
 package model;
 
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
+
 public class Globals {
 	//Status Code
 	public final static int COMMAND_MSG = 0x0000;
@@ -23,6 +29,16 @@ public class Globals {
 			return ("Status number format not expected: " + messageType);	
 		}
 	}
+	
+	public final static void setAllRequestAttr(HttpServletRequest request, HashMap<String,String> map) 
+	{
+		Set<String> keys = map.keySet();
+		Iterator<String>iter = keys.iterator();
+		while(iter.hasNext()) {
+			String key = iter.next();
+			request.setAttribute(key, map.get(key));
+		}
+	}
 	public final static String getMessage(int messageType) {
 		String message = "";
 		switch (messageType) {
@@ -33,7 +49,7 @@ public class Globals {
 			message = "Unknown Failure Occured";
 			break;
 		case BAD_USERNAME:
-			message = "User name not found";
+			message = "User name not found!";
 			break;
 		case BAD_PASSWORD:
 			message = "Bad Password Found";
