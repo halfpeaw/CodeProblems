@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.DatabaseHandler;
+import model.UserHandler;
 import model.Globals;
 
 @WebServlet("/UpdatePassword.do")
@@ -19,16 +19,16 @@ public class UserUpdatePassword extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = -8467508978746498421L;
-	DatabaseHandler db;
+	UserHandler userDB;
 	public void init() throws ServletException {
-		db = (DatabaseHandler)this.getServletContext().getAttribute("db");
+		userDB = UserHandler.getInstance();
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		HttpSession session = request.getSession();
 		String token = (String) session.getAttribute("token");
 		String userName = (String) session.getAttribute("userName");
-		int status = db.updatePassword(
+		int status = userDB.updatePassword(
 				userName,
 				token, 
 				request.getParameter("OldPassword"),

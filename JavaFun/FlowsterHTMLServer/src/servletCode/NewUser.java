@@ -10,13 +10,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.DatabaseHandler;
+import model.UserHandler;
 import model.Globals;
 @WebServlet("/NewUser.do")
 public class NewUser extends HttpServlet {
-	DatabaseHandler db;
+
+	private static final long serialVersionUID = 5421480031916081028L;
+	UserHandler userDB;
 	public void init() throws ServletException {
-		db = (DatabaseHandler)this.getServletContext().getAttribute("db");
+		userDB = UserHandler.getInstance();
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
@@ -28,7 +30,7 @@ public class NewUser extends HttpServlet {
 		String lName = request.getParameter("lName");
 	    
 		
-		String status = db.addUser(userName, password, email, fName, lName);
+		String status = userDB.addUser(userName, password, email, fName, lName);
 		if (status == ""+Globals.SUCCESS) {
 		    RequestDispatcher view = request.getRequestDispatcher("UserAdmin.do");
 		    view.forward(request, response);

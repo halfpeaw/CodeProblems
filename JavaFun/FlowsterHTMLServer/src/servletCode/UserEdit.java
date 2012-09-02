@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.DatabaseHandler;
+import model.UserHandler;
 import model.Globals;
 
 @WebServlet("/EditProfile.do")
@@ -20,16 +20,16 @@ public class UserEdit extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 474307569077169710L;
-	DatabaseHandler db;
+	UserHandler userDB;
 	public void init() throws ServletException {
-		db = (DatabaseHandler)this.getServletContext().getAttribute("db");
+		userDB = UserHandler.getInstance();
 	}
 	
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		HttpSession session = request.getSession();
 		String token = (String) session.getAttribute("token");
 		String userName = (String) session.getAttribute("userName");
-		int status = db.updateUserInfo(
+		int status = userDB.updateUserInfo(
 				userName,
 				token, 
 				request.getParameter("FirstName"),
@@ -47,7 +47,7 @@ public class UserEdit extends HttpServlet {
 		HttpSession session = request.getSession();
 		String token = (String) session.getAttribute("token");
 		String userName = (String) session.getAttribute("userName");
-		HashMap<String, String> map = db.getUserInformation(userName, token);
+		HashMap<String, String> map = userDB.getUserInformation(userName, token);
 		//request.setAttribute("message", "1234567");
 		Globals.setAllRequestAttr(request, map);
 		RequestDispatcher view = request.getRequestDispatcher("EditUser.jsp");

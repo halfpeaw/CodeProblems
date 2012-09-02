@@ -1,7 +1,9 @@
 package coreservlets;
 import javax.servlet.*;
 
-import model.DatabaseHandler;
+import model.DatabaseConnection;
+import model.GameHandler;
+import model.UserHandler;
 
 public class MyServletContextListener implements ServletContextListener {
 
@@ -19,9 +21,10 @@ public class MyServletContextListener implements ServletContextListener {
 		String db_user = sc.getInitParameter("DB_User");
 		String db_password = sc.getInitParameter("DB_Pass");
 		
-		
-		DatabaseHandler db = new DatabaseHandler(db_user, db_password);
-		sc.setAttribute("db", db);
+		DatabaseConnection.initialize(db_user, db_password);
+		UserHandler userDB= UserHandler.getInstance();
+		GameHandler gameDB = GameHandler.getInstance();
+		//sc.setAttribute("userDB", userDB);
 		
 	}
 

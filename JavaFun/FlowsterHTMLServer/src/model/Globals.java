@@ -18,6 +18,7 @@ public class Globals {
 	public final static int BAD_TOKEN = 0x0007;
 	public final static int NO_RESULT_SQL = 0x0008;
 	public final static int TOKEN_EXPIRED = 0x0009;
+	public final static int BAD_GAME_ID = 0x0010;
 	
 	
 	
@@ -65,6 +66,9 @@ public class Globals {
 			break;
 		case TOKEN_EXPIRED:
 			message = "Token has expired";
+			break;
+		case BAD_GAME_ID:
+			message = "The Game ID was not present in the DB";
 			break;
 		default:
 			message = "Status code not found: " + messageType;

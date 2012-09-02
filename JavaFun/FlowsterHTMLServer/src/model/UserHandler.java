@@ -11,19 +11,27 @@ import java.util.Random;
 import java.util.regex.Pattern;
 
 
-public class DatabaseHandler {
-	private Connection con;
+public class UserHandler {
+	private Connection con = null;
 	Random randGenerator = new Random();
 	//activeUsers uses UserName as a key and then a userInfo private class
-	private HashMap<String,UserInfo> activeUsers = new HashMap<String,UserInfo>() ; 
-	public DatabaseHandler(String db_user, String db_password) {
+	private HashMap<String,UserInfo> activeUsers = null;
+	private static UserHandler db = null;
+	private UserHandler() {
 		//Instantiate DB Connection Here
-		try {
-			Class.forName("com.mysql.jdbc.Driver");
-			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/flowsterdb",db_user,db_password);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		con = DatabaseConnection.getInstance();
+		activeUsers = new HashMap<String,UserInfo>() ;
+	}
+	public static UserHandler getInstance() {
+		if (db == null) {
+			synchronized (UserHandler.class) {
+				if (db == null) {
+					db = new UserHandler();					
+				}
+			}
+		} 
+		return db;
+		
 	}
 	public String getMessage() {
 		return "I am a database handler!";

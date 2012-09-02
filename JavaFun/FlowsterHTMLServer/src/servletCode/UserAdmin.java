@@ -12,7 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import model.DatabaseHandler;
+import model.UserHandler;
 import model.Globals;
 
 
@@ -22,10 +22,12 @@ public class UserAdmin extends HttpServlet {
 	 * 
 	 */
 	private static final long serialVersionUID = 8079262787703412186L;
-	DatabaseHandler db;
+	UserHandler userDB;
 	public void init() throws ServletException {
-		db = (DatabaseHandler)this.getServletContext().getAttribute("db");
-		db.userLogin("halfpeaw", "password");
+		//Probably don't need to instantiate the login anymore since treating as a singleton
+		//userDB = (UserHandler)this.getServletContext().getAttribute("userDB");
+		userDB = UserHandler.getInstance();
+		userDB.userLogin("halfpeaw", "password");
 	}
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		response.setContentType("text/html");
@@ -41,7 +43,7 @@ public class UserAdmin extends HttpServlet {
 		    view.forward(request, response);
 		} else {
 			
-			HashMap<String, String> map = db.userLogin(userName, password);
+			HashMap<String, String> map = userDB.userLogin(userName, password);
 			String token = map.get("token");
 			String status = map.get("status");
 			if (!status.equals(""+Globals.SUCCESS)) {
@@ -65,7 +67,7 @@ public class UserAdmin extends HttpServlet {
 		String token = (String) session.getAttribute("token");
 		String userName = (String) session.getAttribute("userName");
 		session.invalidate();
-		int status =  db.userLogOff(userName, token);
+		int status =  userDB.userLogOff(userName, token);
 		request.setAttribute("message",Globals.getMessage(status));
 		response.sendRedirect("main.jsp");
 	}
