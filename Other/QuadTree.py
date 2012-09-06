@@ -17,6 +17,8 @@ class QNode:
       sys.exit("Limit needs to be atleast 1")
     if items == None:
       sys.exit("Bad initialization")
+    if bounds["N"] < bounds["S"] or bounds["E"] < bounds["W"]:
+      sys.exit("Bad Bounds")
     self.items = items
     self.limit = limit
     self.NW = None
@@ -95,9 +97,39 @@ class QNode:
       sys.exit()
     
       
-  def determineIntersect(self, bounds):
-    None
-    
+  def determineIntersect(self, bounds1, bounds2):
+    N1 = bounds1["N"]
+    S1 = bounds1["S"]
+    W1 = bounds1["W"]
+    E1 = bounds1["E"]
+    N2 = bounds2["N"]
+    S2 = bounds2["S"]
+    W2 = bounds2["W"]
+    E2 = bounds2["E"]
+    if (S1 <= N2 <= N1) or (S1 <= S2 <= N1):
+      if (W1 <= W2 <= E1) or (W1 <= E2 <= E1):
+        return True
+    #Just in case our bounds1 is contained entirely within bounds2
+    if (S2 <= N1 <= N2) or (S2 <= S1 <= N2):
+      if (W2 <= W1 <= E2) or (W2 <= E1 <= E2):
+        return True
+    return False
+  
+  #Takes a range compares it to the bounds of self and finds all entrys within children
+  def queryRange(self, range):
+    result = []
+    if not self.determineIntersect(range, self.bounds):
+      return result
+    if self.items != None:
+      for entry in self.items:
+        if self.within(range,entry):
+          result.append(entry)
+    if self.NW != None:
+      result += self.NW.queryRange(range)
+      result += self.SW.queryRange(range)
+      result += self.NE.queryRange(range)
+      result += self.SE.queryRange(range)
+    return result
 
   
   def printTree(self, indent = 0):
@@ -135,8 +167,9 @@ class QuadTree:
     self.root.printTree()
   def adjustSingleLimit(self, node):
     None
+  @EulerSupport.printTiming 
   def queryRange(self, bounds):
-    None
+    return self.root.queryRange(bounds)
 
 if __name__ == "__main__":
   print ("Quad Tree")
@@ -148,6 +181,10 @@ if __name__ == "__main__":
   #tree.printTree()
   tree.addEntry(Entry(1,1,1000))
   tree.printTree()
+  queryB = {"N":50.0, "S":20.0, "W":20.0,"E":50.0}
+  print(tree.queryRange(queryB))
+  queryB = {"N":5.0, "S":0.0, "W":0.0,"E":5.0}
+  print(tree.queryRange(queryB))
   
   
   
