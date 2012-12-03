@@ -34,7 +34,7 @@ public class GetGameBoard extends HttpServlet{
 			request.setAttribute("board", map.get("Board"));
 			request.setAttribute("boardSize",map.get("BoardSize"));
 		} else {
-			request.setAttribute("message",Globals.getMessage(map.get("status")));
+			request.setAttribute("message",map.get("message"));
 		}
 		RequestDispatcher view = request.getRequestDispatcher("GetGameBoard.jsp");
 		view.forward(request, response);

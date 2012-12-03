@@ -46,8 +46,8 @@ public class GameHandler {
 				resultMap.put("Board", resultSQL.getString("Board"));
 				resultMap.put("BoardSize", resultSQL.getString("BoardSize"));
 			} else {
-				resultMap.put("status", ""+Globals.BAD_USERNAME);
-				resultMap.put("message", Globals.getMessage(Globals.BAD_GAME_ID));
+				resultMap.put("status", ""+Globals.BAD_GAME_ID);
+				resultMap.put("message", Globals.getMessage(Globals.BAD_GAME_ID) + "Or possible bad sequence");
 			}
 		} catch (SQLException e) {
 			resultMap.put("status", ""+Globals.UNKNOWN_FAILURE);
