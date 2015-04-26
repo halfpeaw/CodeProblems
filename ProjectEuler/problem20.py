@@ -4,6 +4,8 @@ sys.path.append("../SupportFunctions/")
 import EulerSupport
 import math
 
+#This solved so fast it didn't seem worthwhile to add the efficiency but one thing you can do 
+#is reduce out 0's so / 10 when %10 = 0 every number you are multiplying. So 90 -> 9 etc 
 @EulerSupport.printTiming
 def FactorialDigitSum(n):
    total = math.factorial(n)

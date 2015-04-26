@@ -155,3 +155,26 @@ def countPrimeComponents(num):
       num = int(num / prime)
     components.append((prime,count))
   return components
+
+# Returns a list of numbers that would divide n for example n = 28: [1, 2, 4, 7, 14, 28]
+def FindDivisors(n):
+   if n < 1:
+      print ("ERROR: n must be greater than 0")
+      return []
+   result = FindProperDivisors(n)
+   result.append(n);
+   return result
+
+# Returns a list of numbers that would divide n not including n for example n = 28: [1, 2, 4, 7, 14]
+def FindProperDivisors(n):
+   result = []
+   result.append(1)
+   for i in range(2,int(n**0.5)+1):
+      if n%i==0:
+         # if I is sqrt of n only append I
+         if n/i == i:
+            result.append(i)
+         else:
+            result.append(i)
+            result.append(int(n/i))
+   return result
