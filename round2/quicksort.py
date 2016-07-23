@@ -1,11 +1,13 @@
 
+#Quick sort extracts a pivot and builds list recursively based on whats left and right of the pivot points
+# O(n log (n))
+#Space costraint requires an extra Log N
+#Fix by not making recursive this causes problems with python when the list is too large
 def QuickSort(l):
    if not isinstance(l, (tuple, dict, list)):
       print("not a list")
       return
-   elif (len(l) == 0):
-      return([])
-   elif (len(l) == 1):
+   elif (len(l) <= 1):
       return(l)
    # Find Pivot
    pivot = l[len(l)-1]
