@@ -49,6 +49,11 @@ def QuickSort(l):
    upperHalf = list(filter(lambda x : x > pivot, l[:len(l)-1]))
    result = QuickSort(lowerHalf) + [pivot] + QuickSort(upperHalf)
    return result
+   
+@EulerSupport.printTiming  
+#Check out how fast the built in python sort function works
+def PythonSort(nums):
+  return sorted(nums)
 
 @EulerSupport.printTiming  
 def MergeSortCall(items):
@@ -64,8 +69,14 @@ def QuickSortCall(items):
    
 if __name__ == "__main__":
    nums = [2,4,4,6,1,7,9,8,9,1,0,11,2**8]*250
-   QuickSortCall(nums)
+   Expected = PythonSort(nums)
    nums = [2,4,4,6,1,7,9,8,9,1,0,11,2**8]*250
-   MergeSortCall(nums)
+   QuickResult = QuickSortCall(nums)
+   nums = [2,4,4,6,1,7,9,8,9,1,0,11,2**8]*250
+   MergeResult = resuMergeSortCall(nums)
+   print("Quick = {}".format(Expected==QuickResult))
+   print("Merge = {}".format(Expected==MergeResult))
+   
+   
    
    
