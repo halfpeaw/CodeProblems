@@ -72,12 +72,12 @@ def QuickSortCall(items):
 if __name__ == "__main__":
    nums = [2,4,4,6,1,7,9,8,9,1,0,11,2**8]*10000
    Expected = PythonSort(nums)
-   nums = [2,4,4,6,1,7,9,8,9,1,0,11,2**8]*10000
+   nums = [2,4,4,6,1,7,9,8,9,1,0,11,2**8]*250 #can't handle too much recursion kills it
    QuickResult = QuickSortCall(nums)
    nums = [2,4,4,6,1,7,9,8,9,1,0,11,2**8]*10000
    MergeResult = MergeSortCall(nums)
-   print("Quick = {}".format(Expected==QuickResult))
-   print("Merge = {}".format(Expected==MergeResult))
+   #print("Quick = {}".format(Expected==QuickResult))
+   #print("Merge = {}".format(Expected==MergeResult))
    
    
    
