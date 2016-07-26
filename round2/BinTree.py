@@ -47,8 +47,10 @@ class BST:
       if (nodeToDelete == None):
          print("nothing to delete")
          return False
+      # No children then its a simple delete
       if (nodeToDelete.left == None and nodeToDelete.right == None):
          self.ActualDelete(nodeToDelete)
+      # There's two children, go left, then as far right as you can.  That node becomes what we were deleting, and left of that node replaces it
       elif (nodeToDelete.left != None and nodeToDelete.right != None):
          print("thing")
          someNode = nodeToDelete.left
@@ -56,13 +58,14 @@ class BST:
             someNode = someNode.right
          nodeToDelete.val = someNode.val
          if (someNode.left != None):
-            someNode = someNode.left
+            someNode.parent.right = someNode.left
          else:
             self.ActualDelete(someNode)
+      #If only one node to delete just replace deleted node with that node
       elif (nodeToDelete.left != None and nodeToDelete.right == None):
-         nodeToDelete = nodeToDelete.left
+         self.ActualReplace(nodeToDelete, nodeToDelete.left)
       elif (nodeToDelete.right != None and nodeToDelete.left == None):
-         nodeToDelete = nodeToDelete.right
+         self.ActualReplace(nodeToDelete, nodeToDelete.right)
       print ("Node was deleted")
       return True
 
@@ -74,6 +77,15 @@ class BST:
             node.parent.right = None
          else:
             node.parent.left = None
+            
+   def ActualReplace(self, nodeOld, nodeNew):
+      if nodeOld.parent == None:
+         self.root = nodeNew
+      else:
+         if nodeOld.val > nodeOld.parent.val:
+            nodeOld.parent.right = nodeNew
+         else:
+            nodeOld.parent.left = nodeNew
    
    def traverseTree(self, result, node = UseDefault):
       if (node == UseDefault):
@@ -123,22 +135,15 @@ if __name__ == "__main__":
    bt.addNode(3)
    bt.addNode(-3)
    bt.addNode(8)
+   bt.addNode(7)
    result = []
    bt.traverseTree(result)
    print ("result: {}".format(result))
    bt.printTree()
-   bt.deleteNode(10)
+   bt.deleteNode(8)
    bt.printTree()
    result = []
    bt.traverseTree(result)
    print ("result: {}".format(result))
-   #bt.deleteNode(15)
-   #bt.printTree()
-   bt = BST(10)
-   result = []
-   bt.traverseTree(result)
-   print ("result: {}".format(result))
-   bt.deleteNode(10)
-   result = []
-   bt.traverseTree(result)
-   print ("result: {}".format(result))
+
+   
