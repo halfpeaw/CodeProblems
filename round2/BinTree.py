@@ -1,3 +1,5 @@
+from collections import deque
+
 #This weird hack is so addNode can rely on none without mucking with default variable
 UseDefault = object()
 
@@ -96,7 +98,51 @@ class BST:
       result.append(node.val)
       self.traverseTree(result, node = node.right)
       return
+   
+   def DepthFirstTraversal(self, myNode):
+      marked = []
+      result = []
+      if (myNode == None):
+         print ("hey I expected a real node")
+         return result
+      def RecDepthFirst(myNode):
+         nonlocal marked
+         nonlocal result
+         if (myNode == None):
+            return
+         if (myNode.val not in marked):
+            marked.append(myNode.val)
+            result.append(myNode.val)
+            # If this was a none BST we could have N branches and we would just go from 0..N
+            RecDepthFirst(myNode.left)
+            RecDepthFirst(myNode.right)
+      RecDepthFirst(myNode)
+      return result
       
+   def BreadthFirstTraversal(self, myNode):
+      marked = []
+      result = []
+      if (myNode == None):
+         print("Hey I expected a real node")
+         return result
+      def RecBreadth(nodeQueue):
+         newQueue = deque()
+         while(len(nodeQueue) > 0):
+            myNode = nodeQueue.popleft()
+            if myNode.val not in marked:
+               result.append(myNode.val)
+               marked.append(myNode.val)
+               #If this was a non-bst we would just loop through all children nodes
+               if (myNode.left != None):
+                  newQueue.append(myNode.left)
+               if (myNode.right != None):
+                  newQueue.append(myNode.right)
+         if (len(newQueue) > 0):
+            RecBreadth(newQueue)
+      q = deque()
+      q.append(myNode)
+      RecBreadth(q)
+      return result
       
    def printTree(self, indent = 0, node = UseDefault, branch = "C"):
       space = "  " * indent 
@@ -142,8 +188,15 @@ if __name__ == "__main__":
    bt.printTree()
    bt.deleteNode(8)
    bt.printTree()
-   result = []
-   bt.traverseTree(result)
-   print ("result: {}".format(result))
+   print (bt.DepthFirstTraversal(bt.root))
+   print (bt.BreadthFirstTraversal(bt.root))
+   node = bt.findNode(5)
+   node2 = bt.findNode(3)
+   node2.left = node
+   print (bt.BreadthFirstTraversal(node))
+   # set back to none otherwise everything will break
+   node2.left = None
+   bt.printTree()
+   
 
    
