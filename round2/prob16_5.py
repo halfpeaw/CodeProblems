@@ -67,5 +67,6 @@ if __name__ == "__main__":
    FastAndSlow(100)
    FastAndSlow(1000)
    FastAndSlow(10000)
-   FastAndSlow(30000)
-   
+   #FastAndSlow(30000)
+   FastAndSlow(15)
+   FastAndSlow(25)
