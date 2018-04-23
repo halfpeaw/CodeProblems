@@ -1,0 +1,164 @@
+ for i in range(p):
+    per1, per2 = input().strip().split(' ')
+    per1, per2 = [int(per1), int(per2)]
+    found = False
+    
+    # No one has a home
+    if (people[per1] == -1 and people[per2] == -1):
+        countries[country] = (per1, per2)
+        people[per1] = country
+        people[per2] = country
+        country += 1
+    elif (people[per1] == -1):
+        people[per1] = people[per2]
+        countries[people[per1]] += per1
+    elif (people[per2] == -1):
+        people[per2] = people[per1]
+        countries[people[per2]] += per2
+    # sets are different
+    elif (people[per1] != people[per2]):
+        
+#!/bin/python3
+
+import sys
+from itertools import combinations
+
+
+n = int(input().strip())
+# your code goes here
+a = list(range(1,n))
+b = []
+for i in range(0, len(a)):
+    for j in range(i, len(a)):
+        b += [(a[i], a[j])]
+print(b)
+
+
+#!/bin/python3
+
+#!/bin/python3
+
+import sys
+from itertools import combinations
+
+def BuildTree(n, combo):
+    found = {}
+    print(FindMin(n, combo[0], combo[1], 0, found, [0,0]))
+
+def FindMin(n, a, b, depth, found, current):
+    #outside our normal bounds
+    if ((0 > current[0] or current[0]  >= n) or (0 > current[1] or current[1] >= n)):
+        return -1
+    # Success
+    if (current[0] == n-1 and current[1] == n-1):
+        return depth
+    currentKey = "{}x{}".format(current[0], current[1])
+    # If we already visited this point and less depth
+    if (currentKey in found):
+        if (found[currentKey][0]<= depth):
+            return -1
+        if (found[currentKey][1] == -1):
+            return -1 # No solution
+        elif(found[currentKey][1] == 0): # Solution not yet discovered but its being processed elsewhere
+            found[currentKey][0] = depth
+            return -1
+        elif(found[currentKey][1] != 0): #Solution was found 
+            # depth to end - old depth + Quickest depth to get here
+            return found[currentKey][1] - found[currentKey][0] + depth
+    else:
+        #First value is the depth it took to get here, second value is total depth to bottom
+        found[currentKey] = [depth, 0]
+    print(currentKey)
+    result = []
+    result.append(FindMin(n, a, b, depth+1, found, [current[0]+a, current[1]+b]))
+    result.append(FindMin(n, a, b, depth+1, found, [current[0]+a, current[1]-b]))
+    result.append(FindMin(n, a, b, depth+1, found, [current[0]+b, current[1]+a]))
+    result.append(FindMin(n, a, b, depth+1, found, [current[0]+b, current[1]-a]))
+    result.append(FindMin(n, a, b, depth+1, found, [current[0]-a, current[1]+b]))
+    result.append(FindMin(n, a, b, depth+1, found, [current[0]-a, current[1]-b]))
+    result.append(FindMin(n, a, b, depth+1, found, [current[0]-b, current[1]+a]))
+    result.append(FindMin(n, a, b, depth+1, found, [current[0]-b, current[1]-a]))
+    result = list(filter(lambda x: x >= 0, result))
+    # No solutions were found
+    if len(result) == 0:
+        found[currentKey][1] = -1
+    found[currentKey][1] = min(result)
+    return found[currentKey][1]
+    
+    
+
+n = int(input().strip())
+# your code goes here
+a = list(range(1,n))
+b = []
+for i in range(0, len(a)):
+    for j in range(i, len(a)):
+        b += [(a[i], a[j])]
+print(b)
+BuildTree(n, (1,1))
+
+
+
+
+
+class Node:
+    def __init__(self, val = [0,0], firstParent = None):
+        self.parents = []
+        if firstParent != None:
+            parents.append(firstParent)
+        self.val = val
+        self.one = None
+        self.two = None
+        self.three = None
+    def printVal(self):
+        result = ""
+        if (self.one != None):
+            result += "one: " + str(self.one.val)
+        if (self.two != None):
+            result += "two: " + str(self.two.val)
+        if (self.three != None):
+            result += "three: " + str(self.three.val)
+        result += " Parents: "
+        for parent in self.parents:
+            result += str(parent.val) + " "
+        print(result)
+        
+        #outside our normal bounds
+    if ((0 > current[0] or current[0]  >= n) or (0 > current[1] or current[1] >= n)):
+        return -1
+    
+    if currentKey in found:
+        print(" " * depth + "{}: {} depth: {}, solution {}".format(str(depth), currentKey, str(found[currentKey][0]), str(found[currentKey][1])))
+    else:
+        print(" " * depth + "{}: {} depth: {}, solution {}".format(str(depth), currentKey, "???", "0"))
+    #Success
+    if (current[0] == n-1 and current[1] == n-1):
+        return depth
+    # If we already visited this point and less depth
+    if (currentKey in found):
+        if (found[currentKey][0]<= depth):
+            return -1
+        if (found[currentKey][1] == -1):
+            return -1 # No solution
+        elif(found[currentKey][1] == 0): # Solution not yet discovered but its being processed elsewhere
+            found[currentKey][0] = depth
+            return -1
+        elif(found[currentKey][1] != 0): #Solution was found 
+            print(currentKey + " indirect found! " + str(found[currentKey][1] - found[currentKey][0] + depth))
+            # depth to end - old depth + Quickest depth to get here
+            return found[currentKey][1] - found[currentKey][0] + depth
+    else:
+        #First value is the depth it took to get here, second value is total depth to bottom
+        found[currentKey] = [depth, 0]
+        #print(currentKey)
+    #print(currentKey)
+
+
+7
+        
+6 4 4 8 2 12
+4 3 4 2 16 3
+4 4 2 4 4 4
+8 2 4 -1 -1 -1
+2 16 4 -1 -1 -1
+12 3 4 -1 -1 1
