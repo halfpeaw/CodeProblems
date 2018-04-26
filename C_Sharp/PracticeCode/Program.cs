@@ -22,7 +22,8 @@ namespace PracticeCode
 			node2.next.next = new ListNode(4);
 			node2.next.next.next = new ListNode(1);
 
-			var result = Problems.AddTwoNumbers(node1, node2);
+			//var result = Problems.AddTwoNumbers(node1, node2);
+			Problems.LengthOfLongestSubstring("ohomm");
 		}
 
 

@@ -17,6 +17,37 @@ namespace PracticeCode
 	}
 	static class Problems
 	{
+		/// <summary>
+		/// https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
+		/// </summary>
+		/// <param name="s"></param>
+		/// <returns></returns>
+		public static int LengthOfLongestSubstring(string s)
+		{
+			var seen = new Dictionary<char, int>();
+			int longest = 0;
+			int counter = 0;
+			int lastGood = 0;
+			int current = 0;
+			foreach (char c in s)
+			{
+				if (seen.ContainsKey(c)) {
+					lastGood = Math.Max(seen[c] + 1, lastGood);
+					longest = Math.Max(current, longest);
+					current = counter - (lastGood-1);
+				}
+				else
+				{
+					current++;
+				}
+				seen[c] = counter;
+				counter++;
+			}
+			longest = Math.Max(current, longest);
+			return longest;
+		}
+
+		#region AddTwoNumbers
 		public static ListNode AddTwoNumbers(ListNode l1, ListNode l2)
 		{
 			return AddTwoNumbersRec(0, l1, l2);
@@ -38,6 +69,7 @@ namespace PracticeCode
 			final.next = AddTwoNumbersRec(carry, l1 == null ? null : l1.next, l2 == null ? null : l2.next);
 			return final;
 		}
+		#endregion
 
 		public static int[] TwoSum(int[] nums, int target)
 		{
