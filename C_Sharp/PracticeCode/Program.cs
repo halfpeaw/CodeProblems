@@ -10,54 +10,23 @@ namespace PracticeCode
 	{
 		static void Main(string[] args)
 		{
-			Console.Write("Hello World");
-			var value = TwoSum(new[] { 3, 2, 4 }, 6);
+			
+			//var value = Problems.TwoSum(new[] { 3, 2, 4 }, 6);
+
+			ListNode node1 = new ListNode(2);
+			node1.next = new ListNode(4);
+			node1.next.next = new ListNode(3);
+
+			ListNode node2 = new ListNode(9);
+			node2.next = new ListNode(6);
+			node2.next.next = new ListNode(4);
+			node2.next.next.next = new ListNode(1);
+
+			var result = Problems.AddTwoNumbers(node1, node2);
 		}
 
 
 
-		public static int[] TwoSum(int[] nums, int target)
-		{
-			var dict = new Dictionary<int, List<int>>();
-
-			for (int i = 0; i < nums.Length; i++)
-			{
-				if (dict.TryGetValue(nums[i], out List<int> loc))
-				{
-					dict[nums[i]].Add(i);
-				}
-				else
-				{
-					dict[nums[i]] = new List<int>() { i };
-				}
-			}
-
-			for (int i = 0; i < nums.Length; i ++)
-			{
-				if (dict.ContainsKey(target - nums[i]))
-				{
-					if (target - nums[i] == nums[i] )
-					{
-						if (dict[nums[i]].Count > 1)
-						{
-							var locs = dict[nums[i]];
-							return new int[] { locs[0], locs[1] };
-						}
-						else
-						{
-							continue;
-						}
-						
-					}
-					else
-					{
-						var locs = dict[target - nums[i]];
-						return new int[] { i, locs[0] };
-					}
-				}
-			}
-
-			return new[] { -1, -1 };
-		}
+		
 	}
 }
