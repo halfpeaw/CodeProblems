@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -115,7 +116,97 @@ namespace PracticeCode
 			return new[] { -1, -1 };
 		}
 
-	}
 
-	
+		public static string LongestPalindrome(string s)
+		{
+			string longest = "";
+			for (int i = 0; i < s.Length; i++)
+			{
+				// Odd Check
+				int down = i;
+				int up = i;
+				int tempLength = 0;
+				int start = i;
+				while (down >= 0 && up < s.Length && s[down] == s[up])
+				{
+					tempLength = (up - down) + 1;
+					start = down;
+					down--;
+					up++;
+				}
+				if (tempLength  > longest.Length)
+				{
+					longest = s.Substring(start, tempLength);
+				}
+
+				// Even Check
+				down = i;
+				up = i+1;
+				tempLength = 0;
+				start = i;
+				while (down >= 0 && up < s.Length && s[down] == s[up])
+				{
+					tempLength = (up - down) + 1;
+					start = down;
+					down--;
+					up++;
+				}
+				if (tempLength > longest.Length)
+				{
+					longest = s.Substring(start, tempLength);
+				}
+			}
+			return longest;
+		}
+
+		public static string DiagWords(string s, int numRows)
+		{
+			if (numRows <= 1)
+			{
+				return s;
+			}
+			string result = "";
+			List<char>[] rows = new List<char>[numRows];
+
+			for (int i = 0; i < rows.Length; i++)
+			{
+				rows[i] = new List<char>();
+			}
+
+			int row = 0;
+			bool isDown = true;
+			for (int i = 0; i < s.Length; i++)
+			{
+				rows[row].Add(s[i]);
+				if (isDown && row < numRows-1)
+				{
+					row++;
+				}
+				else if (isDown && row == numRows-1)
+				{
+					isDown = false;
+					row--;
+				}
+				else if (!isDown && row == 0)
+				{
+					row++;
+					isDown = true;
+				}
+				else if (!isDown && row > 0)
+				{
+					row--;
+				}
+				else
+				{
+					Debug.WriteLine("Something went wrong");
+				}
+			}
+
+			foreach (var list in rows)
+			{
+				result += new string(list.ToArray());
+			}
+			return result;
+		}
+	}
 }
