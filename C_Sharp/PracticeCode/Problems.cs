@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace PracticeCode
@@ -32,10 +33,11 @@ namespace PracticeCode
 			int current = 0;
 			foreach (char c in s)
 			{
-				if (seen.ContainsKey(c)) {
+				if (seen.ContainsKey(c))
+				{
 					lastGood = Math.Max(seen[c] + 1, lastGood);
 					longest = Math.Max(current, longest);
-					current = counter - (lastGood-1);
+					current = counter - (lastGood - 1);
 				}
 				else
 				{
@@ -134,14 +136,14 @@ namespace PracticeCode
 					down--;
 					up++;
 				}
-				if (tempLength  > longest.Length)
+				if (tempLength > longest.Length)
 				{
 					longest = s.Substring(start, tempLength);
 				}
 
 				// Even Check
 				down = i;
-				up = i+1;
+				up = i + 1;
 				tempLength = 0;
 				start = i;
 				while (down >= 0 && up < s.Length && s[down] == s[up])
@@ -178,11 +180,11 @@ namespace PracticeCode
 			for (int i = 0; i < s.Length; i++)
 			{
 				rows[row].Add(s[i]);
-				if (isDown && row < numRows-1)
+				if (isDown && row < numRows - 1)
 				{
 					row++;
 				}
-				else if (isDown && row == numRows-1)
+				else if (isDown && row == numRows - 1)
 				{
 					isDown = false;
 					row--;
@@ -207,6 +209,141 @@ namespace PracticeCode
 				result += new string(list.ToArray());
 			}
 			return result;
+		}
+
+		public static IList<IList<int>> LargeGroupPositions(string S)
+		{
+			var result = new List<IList<int>>();
+
+			char lastSeen = '\0';
+			int size = 0;
+			int start = 0;
+			for (int i = 0; i < S.Length; i++)
+			{
+				if (lastSeen == S[i])
+				{
+					size++;
+				}
+				else
+				{
+					if (size >= 3)
+					{
+						result.Add(new List<int> { start, i - 1 });
+					}
+					size = 1;
+					lastSeen = S[i];
+					start = i;
+				}
+			}
+			// One last check
+			if (size >= 3)
+			{
+				result.Add(new List<int> { start, S.Length - 1 });
+			}
+			return result;
+		}
+
+		public static string MaskPII(string S)
+		{
+			// Email
+			if (S.Contains("@"))
+			{
+				S = S.ToLower();
+				string pattern = @"([a-zA-Z])([a-zA-Z]*)([a-zA-Z])(@[a-zA-Z]{2,}\.[a-zA-Z]{2,})";
+				var m = Regex.Match(S, pattern);
+				if (m.Success)
+				{
+					return $"{m.Groups[1].Value}*****{m.Groups[3].Value}{m.Groups[4].Value}";
+				}
+			}
+			// Phone
+			else
+			{
+				// THis could be done sooooo much better but was under time crunch
+				string pattern = @"([^\D]+)";
+				var m = Regex.Matches(S, pattern);
+				string result = "";
+				foreach (Match match in m)
+				{
+					result += match.Groups[1].Value;
+				}
+				if (result.Length == 10)
+				{
+					return $"***-***-{result.Substring(result.Length - 4)}";
+				}
+				else if (result.Length > 10)
+				{
+					string code = "+";
+					int country = result.Length - 10;
+					for (int i = 0; i < country; i++)
+					{
+						code += "*";
+					}
+					return $"{code}-***-***-{result.Substring(result.Length - 4)}";
+				}
+			}
+			return "";
+		}
+
+	// Actual Answer
+	// int consecutiveNumbersSum(int N)
+	// {
+	// 	int ans = 0;
+	// 	for (int i = 2; i <= sqrt(2 * N); i++)
+	// 		if ((2 * N - i * (i - 1)) % (2 * i) == 0) ans++;
+	// 	return ans + 1;
+	// }
+
+	//https://leetcode.com/problems/consecutive-numbers-sum/submissions/1
+	public static int ConsecutiveNumbersSum(int N)
+		{
+			int count = 1;
+			if (N == 1 || N == 2)
+			{
+				return 1;
+			}
+			int high = (N / 2) + 1;
+			for (int i = 1; (((long)N / i) * ((N / i) + 1)) / 2 >= N; i++)
+			{
+				for (long j = N/(i+1); j < N/i; j++)
+				{
+					long total = (j * (j + 1)) / 2;
+					
+					int index = BinarySumSearch(0, high, total - N);
+					if (index >= 0)
+					{
+						// Debug.WriteLine($"{j} - {index}: Div {(double)N/j}");
+						count++;
+					}
+				}
+				
+			}
+
+			return count;
+		}
+
+		public static int BinarySumSearch(int low, int high, long target)
+		{
+			if (high >= low)
+			{
+				int mid = low + ((high - low) / 2);
+				long sum = ((long)mid * ((long)mid + 1)) / 2;
+				if ( sum == target)
+				{
+					return mid;
+				}
+
+				if (sum > target)
+				{
+					return BinarySumSearch(low, mid - 1, target);
+				}
+				else
+				{
+					return BinarySumSearch(mid + 1, high, target);
+				}
+					
+			}
+			return -1;
 		}
 	}
 }
