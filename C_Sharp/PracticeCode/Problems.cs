@@ -19,6 +19,27 @@ namespace PracticeCode
 	}
 	static class Problems
 	{
+		//https://leetcode.com/problems/container-with-most-water/description/
+		public static  int MaxArea(int[] height)
+		{
+			int i = 0;
+			int j = height.Length - 1;
+			int max = 0;
+			while (i < j)
+			{
+				max = Math.Max(max, Math.Min(height[i], height[j]) * (j - i));
+				if (height[j] < height[i])
+				{
+					j--;
+				}
+				else
+				{
+					i++;
+				}
+			}
+			return max;
+		}
+
 		/// <summary>
 		/// https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
 		/// </summary>
