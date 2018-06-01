@@ -19,6 +19,78 @@ namespace PracticeCode
 	}
 	static class Problems
 	{
+		
+		public static bool IsMatch(string s, string p)
+		{
+			var past = new HashSet<string>();
+			return IsMatchRec(s, p, past);
+		}
+
+		public static bool IsMatchRec(string s, string p, HashSet<string> past)
+		{
+			if (past.Contains($"{s}:{p}"))
+			{
+				return false;
+			}
+			else
+			{
+				past.Add($"{s}:{p}");
+			}
+			//Debug.WriteLine($"s: {s} p: {p}");
+			if (p.Length == 0 && s.Length == 0)
+			{
+				return true;
+			}
+			if (p.Length == 0)
+			{
+				return false;
+			}
+
+			bool many = false;
+			char reg = p[0];
+			if (p.Length > 1)
+			{
+				if (p[1] == '*')
+				{
+					many = true;
+				}
+			}
+
+			if (many)
+			{
+				if (IsMatchRec(s, p.Substring(2), past))
+				{
+					return true;
+				}
+
+			}
+
+			if (s.Length > 0 && (s[0] == reg || reg == '.'))
+			{
+				if (many)
+				{
+					if (IsMatchRec(s.Substring(1), p, past))
+					{
+						return true;
+					}
+					if (IsMatchRec(s.Substring(1), p.Substring(2), past))
+					{
+						return true;
+					}
+						
+				}
+				else
+				{
+					if (IsMatchRec(s.Substring(1), p.Substring(1), past))
+					{
+						return true;
+					}
+				}
+			}
+
+			return false;
+		}
+
 		//https://leetcode.com/problems/container-with-most-water/description/
 		public static  int MaxArea(int[] height)
 		{

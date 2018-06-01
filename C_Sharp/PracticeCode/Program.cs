@@ -71,7 +71,22 @@ namespace PracticeCode
 			// Debug.WriteLine(Problems.ConsecutiveNumbersSum(105));
 			// Debug.WriteLine(Problems.ConsecutiveNumbersSum(93003));
 			//Debug.WriteLine(Problems.ConsecutiveNumbersSum(768643));
-			Debug.WriteLine(Problems.ConsecutiveNumbersSum(10000000));
+			//Debug.WriteLine(Problems.ConsecutiveNumbersSum(10000000));
+
+			//Debug.WriteLine(Problems.IsMatch("aa", "aa"));
+			//Debug.WriteLine(Problems.IsMatch("aa", "a"));
+			//Debug.WriteLine(Problems.IsMatch("aa", ".."));
+			//Debug.WriteLine(Problems.IsMatch("aa", "a*"));
+			//Debug.WriteLine(Problems.IsMatch("aa", "aa*"));
+			//Debug.WriteLine(Problems.IsMatch("aa", "ab"));
+			//Debug.WriteLine(Problems.IsMatch("aa", "a*b*"));
+			//Debug.WriteLine(Problems.IsMatch("cc", ".*."));
+			//Debug.WriteLine(Problems.IsMatch("bbbba", ".*a*a"));
+			//Debug.WriteLine(Problems.IsMatch("aaaaaaaaaaaaab", "a*a*a*a*a*a*a*a*a*a*a*a*b"));
+			//Debug.WriteLine(Problems.IsMatch("aaaaaaaaaaaaab", "a*a*a*a*a*a*a*a*a*b"));
+			Debug.WriteLine(Problems.IsMatch("aaaaaaaaaaaaab", "a*a*a*a*a*a*a*a*a*a*c"));
+
+
 		}
 	}
 }
