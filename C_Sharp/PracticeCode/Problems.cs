@@ -17,9 +17,68 @@ namespace PracticeCode
 			val = x;
 		}
 	}
+
 	static class Problems
 	{
-		
+		// https://leetcode.com/problems/merge-k-sorted-lists/description/
+		// TODO: Reimplement with priority queue
+		public static int? findNode(ListNode[] lists)
+		{
+			if (lists.Length == 0)
+			{
+				return null;
+			}
+
+			int min = -1;
+			for (int i = 0; i< lists.Length; i++)
+			{
+				if (lists[i] == null)
+				{
+					continue;
+				}
+
+				if (min == -1)
+				{
+					min = i;
+				}
+				else if (lists[i].val < lists[min].val)
+				{
+					min = i;
+				}
+			}
+			if (min == -1)
+			{
+				return null;
+			}
+			int result = lists[min].val;
+			lists[min] = lists[min].next;
+			return result;
+		}
+
+		public static ListNode MergeKLists(ListNode[] lists)
+		{
+			ListNode pointer = null;
+			ListNode first = null;
+
+			var node = findNode(lists);
+			while (node != null)
+			{
+				
+				if (first == null)
+				{
+					first = new ListNode(node.Value);
+					pointer = first;
+				}
+				else
+				{
+					pointer.next = new ListNode(node.Value);
+					pointer = pointer.next;
+				}
+				node = findNode(lists);
+			}
+			return first;
+		}
+
 		public static bool IsMatch(string s, string p)
 		{
 			var past = new HashSet<string>();
@@ -36,7 +95,7 @@ namespace PracticeCode
 			{
 				past.Add($"{s}:{p}");
 			}
-			//Debug.WriteLine($"s: {s} p: {p}");
+
 			if (p.Length == 0 && s.Length == 0)
 			{
 				return true;
@@ -437,6 +496,32 @@ namespace PracticeCode
 					
 			}
 			return -1;
+		}
+
+		public static ListNode convertListNode(int[] ints)
+		{
+			if (ints.Length == 0)
+			{
+				return null;
+			}
+			ListNode first = null;
+			ListNode pointer = null;
+
+			foreach (int i in ints)
+			{
+
+				if (first == null)
+				{
+					first = new ListNode(i);
+					pointer = first;
+				}
+				else
+				{
+					pointer.next = new ListNode(i);
+					pointer = pointer.next;
+				}
+			}
+			return first;
 		}
 	}
 }

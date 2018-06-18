@@ -13,7 +13,7 @@ namespace PracticeCode
 		{
 			
 			//var value = Problems.TwoSum(new[] { 3, 2, 4 }, 6);
-
+			
 			ListNode node1 = new ListNode(2);
 			node1.next = new ListNode(4);
 			node1.next.next = new ListNode(3);
@@ -26,8 +26,9 @@ namespace PracticeCode
 			//var result = Problems.AddTwoNumbers(node1, node2);
 			///Problems.LengthOfLongestSubstring("ohomm");
 
-			string input = "abc";
+
 			/*
+			string input = "abc";
 			Debug.WriteLine($"{input}: {Problems.LongestPalindrome(input)}");
 			input = "abcba";
 			Debug.WriteLine($"{input}: {Problems.LongestPalindrome(input)}");
@@ -84,9 +85,12 @@ namespace PracticeCode
 			//Debug.WriteLine(Problems.IsMatch("bbbba", ".*a*a"));
 			//Debug.WriteLine(Problems.IsMatch("aaaaaaaaaaaaab", "a*a*a*a*a*a*a*a*a*a*a*a*b"));
 			//Debug.WriteLine(Problems.IsMatch("aaaaaaaaaaaaab", "a*a*a*a*a*a*a*a*a*b"));
-			Debug.WriteLine(Problems.IsMatch("aaaaaaaaaaaaab", "a*a*a*a*a*a*a*a*a*a*c"));
-
-
+			//Debug.WriteLine(Problems.IsMatch("aaaaaaaaaaaaab", "a*a*a*a*a*a*a*a*a*a*c"));
+			// var a1 = Problems.convertListNode(new int[] { 1, 4, 5 });
+			// var a2 = Problems.convertListNode(new int[] { 1, 3, 4 });
+			// var a3 = Problems.convertListNode(new int[] { 2,6 });
+			// var AllA = new ListNode[] { a1, a2, a3 };
+			// var result = Problems.MergeKLists(AllA);
 		}
 	}
 }
