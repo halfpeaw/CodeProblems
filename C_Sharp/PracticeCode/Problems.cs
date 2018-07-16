@@ -20,9 +20,219 @@ namespace PracticeCode
 
 	static class Problems
 	{
-		// https://leetcode.com/problems/merge-k-sorted-lists/description/
-		// TODO: Reimplement with priority queue
-		public static int? findNode(ListNode[] lists)
+		// https://leetcode.com/contest/weekly-contest-90/problems/score-of-parentheses/
+		public static int ScoreOfParenthesesRec(string S)
+		{
+			if (S.Length == 0 || S.Length == 1)
+			{
+				return 0;
+			}
+			List<string> subs = new List<string>();
+
+			for (int i = 0; i < S.Length; i++)
+			{
+				int open = 1;
+				if (S[i] != '(')
+				{
+					Console.WriteLine("Something went wrong at " + i);
+				}
+				int closed = 0;
+				int j = i;
+				while (open != closed && j < S.Length)
+				{
+					j++;
+					if (S[j] == '(')
+					{
+						open++;
+					}
+					else // ')'
+					{
+						closed++;
+					}
+					
+				}
+				if (j >= S.Length)
+				{
+					Console.WriteLine("Something went wrong at " + i);
+				}
+				string item = S.Substring(i, (j - i) + 1);
+				subs.Add(item);
+				i = j;
+			}
+
+			int total = 0;
+			foreach (var item in subs)
+			{
+				if (item.Length == 2)
+				{
+					total += 1;
+				}
+				else
+				{
+					total += 2 * ScoreOfParenthesesRec(item.Substring(1,item.Length-2));
+				}
+			}
+			return total;
+		}
+
+		public static bool BuddyStrings(string A, string B)
+		{
+			if (A.Length != B.Length)
+			{
+				return false;
+			}
+
+			int mismatch = 0;
+			int first = -1;
+			int second = -1;
+			int[] seen = new int[26];
+			for (int i = 0; i < A.Length; i++)
+			{
+				if (mismatch > 2)
+				{
+					return false;
+				}
+				if (A[i] != B[i])
+				{
+					mismatch++;
+					if (mismatch == 1)
+					{
+						first = i;
+					}
+					else
+					{
+						second = i;
+					}
+				}
+				else
+				{
+					seen[A[i] - 97]++;
+				}
+			}
+
+			if ((mismatch == 2 && A[first] == B[second] && A[second] == B[first]) || (seen.Any(x => x > 1) && mismatch == 0))
+			{
+				return true;
+			}
+			return false;
+		}
+
+
+		public static bool ThreeSumContains(int a, int b, int c, IList<IList<int>> result)
+		{
+			return result.Any(m => m[0] == a && m[1] == b && m[2] == c); 
+		}
+		public static bool ThreeSumContains(int[] sorted, IList<IList<int>> result)
+		{
+			return result.Any(m => m[0] == sorted[0] && m[1] == sorted[1] && m[2] == sorted[2]);
+		}
+
+		public static IList<IList<int>> ThreeSum(int[] nums)
+		{
+			IList<IList<int>> result = new List<IList<int>>();
+			Array.Sort(nums);
+			for (int i = 0; i < nums.Length; i++)
+			{
+				int j = i + 1;
+				int k = nums.Length - 1;
+				while (j < k)
+				{
+					double a = nums[i];
+					double b = nums[j];
+					double c = nums[k];
+					if (b + c == -a)
+					{
+						if (!ThreeSumContains(nums[i], nums[j], nums[k], result))
+						{
+							result.Add(new List<int>() { nums[i], nums[j], nums[k] });
+						}
+						j++;
+					}
+					else if (b + c > -a) 
+					{
+						k--;
+					}
+					else if (b + c < -a)
+					{
+						j++;
+					}
+				}
+			}
+			return result;
+		}
+
+		public static IList<IList<int>> ThreeSum2(int[] nums)
+		{
+			IList<IList<int>> result = new List<IList<int>>();
+			for (int i = 0; i < nums.Length; i++)
+			{
+				int iVal = -nums[i];
+				var dict = new Dictionary<double, int>();
+				for (int j = i+1; j < nums.Length; j++)
+				{
+					
+					if (dict.ContainsKey(iVal - nums[j]))
+					{
+						dict[iVal - nums[j]] += 1;
+					}
+					else
+					{
+						dict[iVal - nums[j]] = 1;
+					}
+				}
+
+				for (int j = i + 1; j < nums.Length; j++)
+				{
+					if (dict.ContainsKey(nums[j]))
+					{
+						if (2 * nums[j] != iVal || dict[nums[j]] > 1 )
+						{
+							var sortedArray = new int[] { nums[i], nums[j], iVal - nums[j] };
+							Array.Sort(sortedArray);
+							if (!ThreeSumContains(sortedArray, result))
+							{
+								result.Add(sortedArray);
+							}
+						}
+					}
+				}
+			}
+			return result;
+		}
+
+
+
+		public static HashSet<HashSet<int>> Combos(HashSet<int> items)
+		{
+			var result = new HashSet<HashSet<int>>();
+			CombosRec(items, ref result);
+			return result;
+		}
+
+		public static  void CombosRec(HashSet<int> items, ref HashSet<HashSet<int>> result)
+		{
+			if (result.Contains(items))
+			{
+				return;
+			}
+			if (items.Count == 0)
+			{
+				return;
+			}
+			result.Add(items);
+			foreach (int item in items)
+			{
+				var newItems = new HashSet<int>(items);
+				newItems.Remove(item);
+				CombosRec(newItems, ref result);
+			}
+		}
+
+
+
+			// https://leetcode.com/problems/merge-k-sorted-lists/description/
+			// TODO: Reimplement with priority queue
+			public static int? findNode(ListNode[] lists)
 		{
 			if (lists.Length == 0)
 			{
