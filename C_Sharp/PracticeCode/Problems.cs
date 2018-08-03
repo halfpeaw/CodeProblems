@@ -20,6 +20,69 @@ namespace PracticeCode
 
 	static class Problems
 	{
+		public static ListNode SwapPairs(ListNode head)
+		{
+			if (head == null || head.next == null)
+			{
+				return head;
+			}
+
+			ListNode first = head;
+			ListNode second = head.next;
+			ListNode third = second.next;
+
+			first.next = third;
+			second.next = first;
+			ListNode orgin = second;
+			ListNode prev = first;
+
+			while (third != null && third.next != null)
+			{
+				first = third;
+				second = third.next;
+				third = third.next.next;
+
+				// swap
+				first.next = third;
+				second.next = first;
+
+				// conect old value
+				prev.next = second;
+				prev = first;
+			}
+
+			return orgin;
+		}
+
+		// https://leetcode.com/problems/letter-combinations-of-a-phone-number/description/
+		private static string[] letters = new string[] { " ", "", "abc", "def", "ghi", "jkl", "mno", "pqrs", "tuv", "wxyz" }; // pos 0,1 never used
+
+		public static IList<string> LetterCombinations(string digits)
+		{
+			if (digits.Length == 0)
+			{
+				return new List<string>();
+			}
+			return LetterCombinationsRec(digits, "");
+		}
+
+		public static IList<string> LetterCombinationsRec(string digits, string current)
+		{
+			if (digits.Length == 0)
+			{
+				return new List<string>() { current };
+			}
+			var result = new List<string>();
+
+			int loc = Convert.ToInt32(digits[0]) - 48;
+			foreach (char c in letters[loc])
+			{
+				result.AddRange(LetterCombinationsRec(digits.Substring(1), current + c));
+			}
+
+			return result;
+		}
+
 		// https://leetcode.com/contest/weekly-contest-90/problems/score-of-parentheses/
 		public static int ScoreOfParenthesesRec(string S)
 		{
