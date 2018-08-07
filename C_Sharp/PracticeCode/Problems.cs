@@ -20,6 +20,133 @@ namespace PracticeCode
 
 	static class Problems
 	{
+		// https://leetcode.com/problems/search-a-2d-matrix/description/
+		public static bool SearchMatrix(int[,] matrix, int target)
+		{
+			if (matrix.Length == 0) return false;
+			int midRow = matrix.GetLength(0) / 2;
+			int bottom = 0;
+			int top = matrix.GetLength(0) - 1;
+
+			while (true)
+			{
+				if (target >= matrix[midRow, 0])
+				{
+					// Bounded or top
+					if ((midRow <= top - 1 && target < matrix[midRow+1,0]) || midRow == top)
+					{
+						break;
+					}
+					bottom = midRow+1;
+					midRow = (bottom + top) / 2;
+				}
+				else
+				{
+					// bounded or bottom
+					if (midRow == bottom)
+					{
+						if (target < matrix[midRow, 0])
+						{
+							return false;
+						}
+						break; 
+					}
+					if ((midRow >= bottom + 1 && target > matrix[midRow - 1, 0]))
+					{
+						midRow--;
+						break;
+					}
+					top = midRow;
+					midRow = (bottom + top) / 2;
+				}
+			}
+
+			int midColumn = matrix.GetLength(1) / 2;
+			bottom = 0;
+			top = matrix.GetLength(1) - 1;
+
+			while (true)
+			{
+				if (target == matrix[midRow, midColumn])
+				{
+					return true;
+				}
+				else if (target > matrix[midRow, midColumn])
+				{
+
+					if (midColumn == top)
+					{
+						return false;
+					}
+					bottom = midColumn + 1;
+					midColumn = (bottom + top) / 2;
+				}
+				else
+				{
+					if (midColumn == bottom)
+					{
+						return false;
+					}
+					top = midColumn;
+					midColumn = (bottom + top) / 2;
+				}
+			}
+		}
+
+
+		public static IList<string> GenerateParenthesis(int n)
+		{
+			var result = new List<string>();
+			GenerateParenthesisRec(n, 0, 0, "", result);
+			return result;
+		}
+
+		private static void GenerateParenthesisRec(int n, int open, int closed, string prev, List<string> result)
+		{
+			if (open == closed && n == open)
+			{
+				result.Add(prev);
+			}
+			if (closed > open)
+			{
+				Console.WriteLine($"Something has gone terribly wrong {prev}");
+				return;
+			}
+			if (closed < open)
+			{
+				GenerateParenthesisRec(n, open, closed + 1, prev + ")", result);
+			}
+			if (open < n)
+			{
+				GenerateParenthesisRec(n, open + 1, closed, prev + "(", result);
+			}
+		}
+
+
+
+			public static int Divide(int dividend, int divisor)
+		{
+			bool isNegative = divisor < 0 && dividend > 0 || divisor > 0 && dividend < 0;
+			int mostSigTop = 0;
+			int mostSigBottom = 0;
+			int mask = 1;
+			int counter = 0;
+			while (mask <= dividend)
+			{
+				mask = mask << 1;
+				mostSigTop++;
+			}
+
+			while (mask <= divisor)
+			{
+				mask = mask << 1;
+				mostSigBottom++;
+			}
+			return 0;
+
+
+		}
+
 		public static ListNode SwapPairs(ListNode head)
 		{
 			if (head == null || head.next == null)
