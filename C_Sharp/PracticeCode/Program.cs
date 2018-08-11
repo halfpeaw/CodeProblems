@@ -105,8 +105,30 @@ namespace PracticeCode
 			{23, 30, 35, 50},
 		};
 
+			/*TreeNode root = new TreeNode(3);
+			root.left = new TreeNode(9);
+			root.right = new TreeNode(20);
+			root.right.left = new TreeNode(15);
+			root.right.right = new TreeNode(7);*/
+			/*TreeNode root = new TreeNode(1);
+			root.left = new TreeNode(2);
+			root.left.left = new TreeNode(4);
+			root.right = new TreeNode(5);
+			root.right.right = new TreeNode(6);
+			root.right.right.right = new TreeNode(7);*/
 
-			var result = Problems.SearchMatrix(array, 51);
+			TreeNode root = new TreeNode(1);
+			root.left = new TreeNode(2);
+			root.left.left = new TreeNode(4);
+			root.left.left.left = new TreeNode(10);
+			root.left.right = new TreeNode(5);
+			root.left.right.right = new TreeNode(6);
+			root.left.right.right.left = new TreeNode(3);
+			root.left.right.right.right = new TreeNode(7);
+
+			// var result = Problems.BuildTree(new int[]{ 3,9,20,15,7}, new int[] { 9, 3, 15, 20, 7 });
+			// var result = Problems.BuildTree(new int[] { 1,2,4,5,6,7 }, new int[] { 4,2,5,6,7,1 });
+			var result = Problems.BuildTree(new int[] { 1,2,4,10,5,6,3,7 }, new int[] { 10,4,2,5,3,6,7,1 });
 
 		}
 	}

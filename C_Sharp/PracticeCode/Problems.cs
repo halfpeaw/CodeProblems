@@ -18,8 +18,122 @@ namespace PracticeCode
 		}
 	}
 
+
+	public class TreeNode {
+	public int val;
+	public TreeNode left;
+	public TreeNode right;
+	public TreeNode(int x) { val = x; }
+	 }
+ 
+
 	static class Problems
 	{
+		//https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/
+		private static int preOrderLoc;
+		private static int inOrderLoc;
+		public static TreeNode BuildTree(int[] preorder, int[] inorder)
+		{
+
+			if (preorder.Length == 0 || inorder.Length == 0)
+			{
+				return null;
+			}
+			TreeNode root = new TreeNode(preorder[0]);
+			preOrderLoc = 0;
+			inOrderLoc = 0;
+			validateTree(preorder, inorder, new HashSet<int>() { preorder[0] }, root);
+			return root;
+		}
+
+		public static void validateTree(int [] preorder, int[] inorder, HashSet<int> seen, TreeNode root )
+		{
+
+			if (preOrderLoc+1 >= preorder.Length || inOrderLoc >= preorder.Length)
+			{
+				return;
+			}
+
+			if ((preorder[preOrderLoc] != inorder[inOrderLoc]))
+			{
+				preOrderLoc++;
+				var leftNode = new TreeNode(preorder[preOrderLoc]);
+				seen.Add(preorder[preOrderLoc]);
+				root.left = leftNode;
+				validateTree(preorder, inorder, seen, leftNode);
+			}
+
+			if (preOrderLoc + 1 >= preorder.Length || inOrderLoc >= inorder.Length)
+			{
+				return;
+			}
+
+			// Do right stuff
+			if (seen.Contains(inorder[inOrderLoc+1]) && root.val != inorder[inOrderLoc+1])
+			{
+				inOrderLoc++;
+				return;
+			}
+
+			if (preorder[preOrderLoc] == inorder[inOrderLoc] || root.val == inorder[inOrderLoc])
+			{
+				if (root.val == inorder[inOrderLoc + 1])
+				{
+					
+				}
+				preOrderLoc++;
+				inOrderLoc++;
+				var rightNode = new TreeNode(preorder[preOrderLoc]);
+				seen.Add(preorder[preOrderLoc]);
+				root.right = rightNode;
+				validateTree(preorder, inorder, seen, rightNode);
+			}
+		}
+
+
+
+		// https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/description/
+		public static IList<IList<int>> ZigzagLevelOrder(TreeNode root)
+		{
+
+			IList<IList<int>> results = new List<IList<int>>();
+			if (root == null)
+			{
+				return results;
+			}
+			var next = new List<TreeNode>();
+			next.Add(root);
+
+			ZigzagLevelOrderRec(next, results, true);
+			return results;
+		}
+
+		public static void ZigzagLevelOrderRec(IList<TreeNode> current, IList<IList<int>> results, bool leftToRight)
+		{
+			if (current.Count == 0) return;
+			var next = new List<TreeNode>();
+			var result = new List<int>();
+			foreach (var node in current)
+			{
+				result.Add(node.val);
+				if (node.left != null)
+				{
+					next.Add(node.left);
+				}
+				if (node.right != null)
+				{
+					next.Add(node.right);
+				}
+			}
+			if (!leftToRight)
+			{
+				result.Reverse();
+			}
+			results.Add(result);
+
+			ZigzagLevelOrderRec(next, results, !leftToRight);
+		}
+
 		// https://leetcode.com/problems/search-a-2d-matrix/description/
 		public static bool SearchMatrix(int[,] matrix, int target)
 		{
@@ -130,7 +244,6 @@ namespace PracticeCode
 			int mostSigTop = 0;
 			int mostSigBottom = 0;
 			int mask = 1;
-			int counter = 0;
 			while (mask <= dividend)
 			{
 				mask = mask << 1;
