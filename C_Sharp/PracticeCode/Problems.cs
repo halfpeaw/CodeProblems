@@ -29,6 +29,53 @@ namespace PracticeCode
 
 	static class Problems
 	{
+		// https://leetcode.com/problems/add-binary/description/
+		public static string AddBinary(string a, string b)
+		{
+			string result = String.Empty;
+			int i = a.Length - 1;
+			int j = b.Length - 1;
+			int carry = 0;
+			while (i >= 0 || j >= 0 || carry == 1)
+			{
+				int aVal = 0;
+				int bVal = 0;
+				if (i >= 0)
+				{
+					aVal = a[i] - '0';
+					i--;
+				}
+				if (j >= 0)
+				{
+					bVal = b[j] - '0'; ;
+					j--;
+				}
+
+				if (aVal + bVal + carry == 3)
+				{
+					carry = 1;
+					result = $"1{result}";
+				}
+				else if ((aVal + bVal + carry == 2))
+				{
+					carry = 1;
+					result = $"0{result}";
+				}
+				else if ((aVal + bVal + carry == 1))
+				{
+					carry = 0;
+					result = $"1{result}";
+				}
+				else
+				{
+					carry = 0;
+					result = $"0{result}";
+				}
+			}
+
+			return result;
+		}
+
 		//https://leetcode.com/problems/construct-binary-tree-from-preorder-and-inorder-traversal/description/
 		private static int preOrderLoc;
 		private static int inOrderLoc;
@@ -239,25 +286,59 @@ namespace PracticeCode
 
 
 			public static int Divide(int dividend, int divisor)
-		{
-			bool isNegative = divisor < 0 && dividend > 0 || divisor > 0 && dividend < 0;
+			{
+			bool isNegative = (divisor < 0 && dividend > 0) || (divisor > 0 && dividend < 0);
+			
+			if (divisor == 0 || dividend == 0)
+			{
+				return 0;
+			}
+
+			long top = Math.Abs((long)dividend);
+			long bottom = Math.Abs((long)divisor);
+
+			if (bottom > top) return 0;
+
+
 			int mostSigTop = 0;
 			int mostSigBottom = 0;
-			int mask = 1;
-			while (mask <= dividend)
+			long mask = 1;
+			while (mask <= top)
 			{
 				mask = mask << 1;
 				mostSigTop++;
 			}
 
-			while (mask <= divisor)
+			mask = 1;
+			while (mask <= bottom)
 			{
 				mask = mask << 1;
 				mostSigBottom++;
 			}
-			return 0;
+			int result = 0;
 
+			long bottomShift = bottom << (mostSigTop - mostSigBottom);
 
+			while (bottomShift >= bottom)
+			{
+				if (top >= bottomShift)
+				{
+					top = top - bottomShift;
+					result = (result << 1) + 1;
+
+				}
+				else
+				{
+					result = result << 1;
+				}
+				bottomShift = bottomShift >> 1;
+			}
+			if (result == int.MinValue && !isNegative)
+			{
+				result = int.MaxValue;
+			}
+
+			return isNegative ? -result : result; 
 		}
 
 		public static ListNode SwapPairs(ListNode head)
