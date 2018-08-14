@@ -127,13 +127,19 @@ namespace PracticeCode
 			result = Problems.Divide(10, 1);*/
 
 			//["WordDictionary","addWord","addWord","addWord","addWord","addWord","addWord","addWord","addWord","search","search","search","search","search","search","search","search","search","search"]
-		    //[[],["ran"],["rune"],["runner"],["runs"],["add"],["adds"],["adder"],["addee"],["r.n"],["ru.n.e"],["add"],["add."],["adde."],[".an."],["...s"],["....e."],["......."],["..n.r"]]
+			//[[],["ran"],["rune"],["runner"],["runs"],["add"],["adds"],["adder"],["addee"],["r.n"],["ru.n.e"],["add"],["add."],["adde."],[".an."],["...s"],["....e."],["......."],["..n.r"]]
 
+			/*
 			WordDictionary dict = new WordDictionary();
 			dict.AddWord("bad");
 			
 			var result = dict.Search("b");
-			result = dict.Search(".a.a.k");
+			result = dict.Search(".a.a.k");*/
+			KthLargest thing = new KthLargest(8, new int[] { 0, 6, 5, 1, 4, 3, 2, 12, 123, 7, 11, 15 });
+			var result = thing.Add(9);
+			result = thing.Add(10);
+			result = thing.Add(2);
+			result = thing.Add(100);
 		}
 	}
 }
