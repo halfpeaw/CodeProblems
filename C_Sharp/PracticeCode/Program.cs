@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Common;
+using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -135,11 +137,35 @@ namespace PracticeCode
 			
 			var result = dict.Search("b");
 			result = dict.Search(".a.a.k");*/
+			/*
 			KthLargest thing = new KthLargest(8, new int[] { 0, 6, 5, 1, 4, 3, 2, 12, 123, 7, 11, 15 });
 			var result = thing.Add(9);
 			result = thing.Add(10);
 			result = thing.Add(2);
-			result = thing.Add(100);
+			result = thing.Add(100);*/
+			//var x = Problems.BinarySearch(new int[] { 1, 2, 3, 4, 5, 7, 20, 33, 35, 200 }, 0, 10, 5);
+			//Problems.BinarySearch(new int[] { 1, 2, 3, 4 }, 0, 4, 2);
+
+			var finder = new MedianFinder();
+			finder.AddNum(40);
+			finder.AddNum(12);
+			finder.AddNum(16);
+			finder.AddNum(14);
+
+			finder.AddNum(35);
+			finder.AddNum(19);
+			finder.AddNum(34);
+			finder.AddNum(35);
+
+			finder.AddNum(28);
+			finder.AddNum(35);
+			finder.AddNum(26);
+			finder.AddNum(6);
+
+			finder.AddNum(8);
+			var x = finder.FindMedian();
+			finder.AddNum(2);
+			x = finder.FindMedian();
 		}
 	}
 }

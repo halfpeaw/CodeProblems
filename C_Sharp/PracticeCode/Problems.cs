@@ -29,8 +29,88 @@ namespace PracticeCode
 
 	static class Problems
 	{
-		// https://leetcode.com/problems/add-binary/description/
-		public static string AddBinary(string a, string b)
+		//https://leetcode.com/problems/search-in-rotated-sorted-array/description/
+		public static int Search(int[] nums, int target)
+		{
+			if (nums.Length == 0) return -1;
+
+			// always need at least two entries for my code
+			if (nums.Length == 1)
+			{
+				return nums[0] == target ? 0 : -1;
+
+			}
+
+			int minFirst = nums[0];
+			int AbsoluteMinIndex = 0;
+			int start = 0;
+			int end = nums.Length;
+			int pivot = (start + end) / 2;
+			while (true)
+			{
+				// When we've narrowed down to one entry we must be done
+				if (start == end - 1)
+				{
+					// Make sure our last entry isn't the closest
+					if (nums[start] < minFirst)
+					{
+						AbsoluteMinIndex = start;
+					}
+					break;
+				}
+				if (nums[pivot] < minFirst) // Go left if pivot is smaller than minFirst
+				{
+					AbsoluteMinIndex = pivot;
+					end = pivot;
+				}
+				else // go right if arr[pivot] is greater or equal to our minimum First Value
+				{
+					start = pivot;
+				}
+				pivot = (start + end) / 2;
+			}
+			// At this point I realized C# doesn't have a good way of returning a sub-array without having to do an entire copy which add unnecessary memory cost
+			// return target < minFirst ? Array.BinarySearch(arr[AbsoluteMinIndex:], target) : Array.BinarySearch(arr[:AbsoluteMinIndex], target)
+			if (target >= nums[AbsoluteMinIndex] && target <= nums[nums.Length - 1])
+			{
+				return BinarySearch(nums, AbsoluteMinIndex, nums.Length, target);
+			}
+			else
+			{
+				return BinarySearch(nums, 0, AbsoluteMinIndex, target);
+			}
+		}
+
+		public static int BinarySearch(int[] arr, int start, int end, int target)
+		{
+			if (start >= end)
+			{
+				return -1;
+			}
+			if (start < 0 || end < 0 || start >= arr.Length || end > arr.Length)
+			{
+				return -1;
+			}
+
+			int pivot = (start + end) / 2;
+			if (arr[pivot] == target)
+			{
+				return pivot;
+			}
+			else if (arr[pivot] > target)
+			{
+				return BinarySearch(arr, start, pivot, target);
+			}
+			else
+			{
+				return BinarySearch(arr, pivot+1, end, target);
+			}
+		}
+
+
+
+			// https://leetcode.com/problems/add-binary/description/
+			public static string AddBinary(string a, string b)
 		{
 			string result = String.Empty;
 			int i = a.Length - 1;
