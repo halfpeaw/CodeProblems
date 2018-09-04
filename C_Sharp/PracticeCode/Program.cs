@@ -100,12 +100,7 @@ namespace PracticeCode
 			//var a = Problems.convertListNode(new int[] { 1,2,3,4,5,6,7 });
 			//var result = Problems.SwapPairs(a);
 
-			int[,] array = new int[,]
-		{
-			{1, 3, 5, 7 },
-			{ 10, 11, 16, 20},
-			{23, 30, 35, 50},
-		};
+			
 
 			/*TreeNode root = new TreeNode(3);
 			root.left = new TreeNode(9);
@@ -146,26 +141,15 @@ namespace PracticeCode
 			//var x = Problems.BinarySearch(new int[] { 1, 2, 3, 4, 5, 7, 20, 33, 35, 200 }, 0, 10, 5);
 			//Problems.BinarySearch(new int[] { 1, 2, 3, 4 }, 0, 4, 2);
 
-			var finder = new MedianFinder();
-			finder.AddNum(40);
-			finder.AddNum(12);
-			finder.AddNum(16);
-			finder.AddNum(14);
 
-			finder.AddNum(35);
-			finder.AddNum(19);
-			finder.AddNum(34);
-			finder.AddNum(35);
-
-			finder.AddNum(28);
-			finder.AddNum(35);
-			finder.AddNum(26);
-			finder.AddNum(6);
-
-			finder.AddNum(8);
-			var x = finder.FindMedian();
-			finder.AddNum(2);
-			x = finder.FindMedian();
+		char[,] array = new char[,]
+		{
+			{'X','X','X','X'},
+			{'X','X','X','X'},
+			{'X','O','X','X'},
+			{'X','O','X','X'},
+		};
+			Problems.Solve(array);
 		}
 	}
 }

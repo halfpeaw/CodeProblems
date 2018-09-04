@@ -29,6 +29,125 @@ namespace PracticeCode
 
 	static class Problems
 	{
+		// https://leetcode.com/problems/surrounded-regions/description/
+		public static void Solve(char[,] board)
+		{
+			int maxW = board.GetLength(0) - 1;
+			int maxH = board.GetLength(1) - 1;
+			int minW = 0;
+			int minH = 0;
+
+			var oldMarked = new Dictionary<int, Dictionary<int, bool>>();
+			bool outer = true;
+			while (minW <= maxW && minH <= maxH )
+			{
+				var potentialMarked = new Dictionary<int, Dictionary<int, bool>>();
+				// Horizontal
+				for (int i = minW; i <= maxW; i++)
+				{
+					AddPotentialMatch(potentialMarked, board, i, minH);
+					AddPotentialMatch(potentialMarked, board, i, maxH);
+				}
+
+				// Vertical
+				for (int j = minH; j <= maxH; j++)
+				{
+					AddPotentialMatch(potentialMarked, board, minW, j);
+					AddPotentialMatch(potentialMarked, board, maxW, j);
+				}
+
+				bool success = true;
+				while (success)
+				{
+					success = false;
+					foreach (int potentialW in potentialMarked.Keys.ToList())
+					{
+						foreach (int potentialH in potentialMarked[potentialW].Keys.ToList())
+						{
+							if (isMatch(oldMarked,  potentialW, potentialH, outer))
+							{
+								success = true;
+								potentialMarked[potentialW].Remove(potentialH);
+								if (potentialMarked[potentialW].Count == 0)
+								{
+									potentialMarked.Remove(potentialW);
+								}
+							}
+						}
+					}
+				}
+
+				// Set all remaining potential to Xs
+				foreach (int potentialW in potentialMarked.Keys)
+				{
+					foreach (int potentialH in potentialMarked[potentialW].Keys)
+					{
+						board[potentialW,potentialH] = 'X';
+					}
+				}
+
+				minW++;
+				maxW--;
+				minH++;
+				maxH--;
+				outer = false;
+			}
+		}
+
+		private static void AddPotentialMatch(Dictionary<int, Dictionary<int, bool>> potential, char[,] board, int w, int h)
+		{
+			if (board[w, h] == 'O')
+			{
+				if (!potential.ContainsKey(w))
+				{
+					potential[w] = new Dictionary<int, bool>();
+				}
+				potential[w][h] = true;
+			}
+		}
+
+		// Also updates matches if we find a match
+		// Return true on success
+		private static bool isMatch(Dictionary<int, Dictionary<int, bool>> matches, int w, int h, bool outer)
+		{
+			bool success = false;
+			if (outer)
+			{
+				success = true;
+			}
+
+			if (matches.ContainsKey(w))
+			{
+				if (matches[w].ContainsKey(h - 1) || matches[w].ContainsKey(h + 1))
+				{
+					success = true;
+				}
+			}
+			if (matches.ContainsKey(w - 1))
+			{
+				if (matches[w - 1].ContainsKey(h))
+				{
+					success = true;
+				}
+			}
+			if (matches.ContainsKey(w + 1))
+			{
+				if (matches[w + 1].ContainsKey(h))
+				{
+					success = true;
+				}
+			}
+			if (success)
+			{
+				if (!matches.ContainsKey(w))
+				{
+					matches[w] = new Dictionary<int, bool>();
+				}
+				matches[w][h] = true;
+			}
+			return success;
+		}
+
 		//https://leetcode.com/problems/search-in-rotated-sorted-array/description/
 		public static int Search(int[] nums, int target)
 		{
