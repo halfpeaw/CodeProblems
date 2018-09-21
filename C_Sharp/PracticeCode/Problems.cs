@@ -29,6 +29,87 @@ namespace PracticeCode
 
 	static class Problems
 	{
+		// https://leetcode.com/problems/path-sum-ii/description/
+		public static IList<IList<int>> PathSum(TreeNode root, int sum)
+		{
+			IList<IList<int>> result = new List<IList<int>>();
+			var queue = new List<int>();
+			if (root == null) return result;
+			HasPathSumRec2(root, sum, 0, queue, result);
+			return result;
+		}
+
+		// https://leetcode.com/problems/path-sum-ii/description/
+		public static void HasPathSumRec2(TreeNode node, int sum, int current, List<int> queue, IList<IList<int>> result)
+		{
+			current += node.val;
+			queue.Add(node.val);
+			if (node.left != null)
+			{
+				HasPathSumRec2(node.left, sum, current, queue, result);
+			}
+
+			if (node.right != null)
+			{
+				HasPathSumRec2(node.right, sum, current, queue, result);
+			}
+
+			if (current == sum && node.left == null && node.right == null)
+			{
+				result.Add(new List<int>(queue));
+			}
+			
+			// This should always be node.val since we do this at every node we visit before returning
+			queue.RemoveAt(queue.Count - 1);
+			return;
+		}
+
+		public static bool HasPathSum(TreeNode root, int sum)
+		{
+			if (root == null) return false;
+			return HasPathSumRec(root, sum, 0);
+		}
+
+		public static bool HasPathSumRec(TreeNode node, int sum, int current)
+		{
+			current += node.val;
+			if (node.left != null)
+			{
+				if (HasPathSumRec(node.left, sum, current)) return true;
+			}
+
+			if (node.right != null)
+			{
+				if (HasPathSumRec(node.right, sum, current)) return true;
+			}
+
+			if (current == sum && node.left == null && node.right == null) return true;
+			return false;
+		}
+
+
+		// https://leetcode.com/problems/repeated-dna-sequences/description/
+		public static IList<string> FindRepeatedDnaSequences(string s)
+		{
+			var result = new HashSet<string>();
+			var allDNA = new Dictionary<string, bool>();
+
+			for (int i = 9; i < s.Length; i++)
+			{
+				string dna = s.Substring(i - 9, 10);
+				if (allDNA.ContainsKey(dna))
+				{
+					result.Add(dna);
+				}
+				else
+				{
+					allDNA[dna] = true;
+				}
+			}
+
+			return result.ToList();
+		}
+
 		// https://leetcode.com/problems/binary-tree-right-side-view/description/
 		public static IList<int> RightSideView(TreeNode root)
 		{
