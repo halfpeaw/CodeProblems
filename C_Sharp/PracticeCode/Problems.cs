@@ -29,8 +29,44 @@ namespace PracticeCode
 
 	static class Problems
 	{
+		// https://leetcode.com/problems/binary-tree-right-side-view/description/
+		public static IList<int> RightSideView(TreeNode root)
+		{
+			IList<int> results = new List<int>();
+			var nodes = new Queue<TreeNode>();
+
+			// Deal with first
+			if (root == null)
+			{
+				return results;
+			}
+
+			nodes.Enqueue(root);
+			while (nodes.Count > 0)
+			{
+				results.Add(nodes.Last<TreeNode>().val);
+				var newNodes = new Queue<TreeNode>();
+				while (nodes.Count > 0)
+				{
+					var node = nodes.Dequeue();
+					if (node.left != null)
+					{
+						newNodes.Enqueue(node.left);
+					}
+					if (node.right != null)
+					{
+						newNodes.Enqueue(node.right);
+					}
+				}
+				nodes = newNodes;
+			}
+
+			return results;
+		}
+
+
 		// https://leetcode.com/problems/surrounded-regions/description/
-		public static void Solve(char[,] board)
+		public static void SolveSurroundedBoard(char[,] board)
 		{
 			int maxW = board.GetLength(0) - 1;
 			int maxH = board.GetLength(1) - 1;
@@ -38,10 +74,12 @@ namespace PracticeCode
 			int minH = 0;
 
 			var oldMarked = new Dictionary<int, Dictionary<int, bool>>();
+			var potentialMarked = new Dictionary<int, Dictionary<int, bool>>();
+
 			bool outer = true;
 			while (minW <= maxW && minH <= maxH )
 			{
-				var potentialMarked = new Dictionary<int, Dictionary<int, bool>>();
+				
 				// Horizontal
 				for (int i = minW; i <= maxW; i++)
 				{
@@ -77,20 +115,20 @@ namespace PracticeCode
 					}
 				}
 
-				// Set all remaining potential to Xs
-				foreach (int potentialW in potentialMarked.Keys)
-				{
-					foreach (int potentialH in potentialMarked[potentialW].Keys)
-					{
-						board[potentialW,potentialH] = 'X';
-					}
-				}
-
 				minW++;
 				maxW--;
 				minH++;
 				maxH--;
 				outer = false;
+			}
+
+			// Set all remaining potential to Xs
+			foreach (int potentialW in potentialMarked.Keys)
+			{
+				foreach (int potentialH in potentialMarked[potentialW].Keys)
+				{
+					board[potentialW, potentialH] = 'X';
+				}
 			}
 		}
 

@@ -102,17 +102,19 @@ namespace PracticeCode
 
 			
 
-			/*TreeNode root = new TreeNode(3);
+			TreeNode root = new TreeNode(3);
 			root.left = new TreeNode(9);
 			root.right = new TreeNode(20);
 			root.right.left = new TreeNode(15);
-			root.right.right = new TreeNode(7);*/
+			root.right.right = new TreeNode(7);
+			var thing = Problems.RightSideView(root);
+
 			/*TreeNode root = new TreeNode(1);
 			root.left = new TreeNode(2);
 			root.left.left = new TreeNode(4);
 			root.right = new TreeNode(5);
 			root.right.right = new TreeNode(6);
-			root.right.right.right = new TreeNode(7);*/
+			root.right.right.right = new TreeNode(7); */
 			// var result = Problems.BuildTree(new int[]{ 3,9,20,15,7}, new int[] { 9, 3, 15, 20, 7 });
 			// var result = Problems.BuildTree(new int[] { 1,2,4,5,6,7 }, new int[] { 4,2,5,6,7,1 });
 			//var result = Problems.BuildTree(new int[] { 1,2,4,10,5,6,3,7 }, new int[] { 10,4,2,5,3,6,7,1 });
@@ -142,14 +144,14 @@ namespace PracticeCode
 			//Problems.BinarySearch(new int[] { 1, 2, 3, 4 }, 0, 4, 2);
 
 
-		char[,] array = new char[,]
+			char[,] array = new char[,]
 		{
 			{'X','X','X','X'},
 			{'X','X','X','X'},
 			{'X','O','X','X'},
 			{'X','O','X','X'},
 		};
-			Problems.Solve(array);
+			
 		}
 	}
 }
